@@ -42,21 +42,21 @@ const next = computed(() => {
 /** About 12 characters fit a footer column; longer values shrink, down to 60 % (minimumScaleFactor in the app). */
 const fit = (value: string) => Math.max(0.6, Math.min(1, 12 / value.length));
 
-const items = computed(() => {
+/** The footer: what comes next, and once players have entered, a second row with the money. */
+const rows = computed(() => {
     const s = props.snapshot;
-    const list: [string, string][] = [
+    const list: [string, string][][] = [[
         ['NEXT', next.value],
         ['NEXT BREAK', s.untilNextBreak === null ? '–' : TimeFormat.countdown(s.untilNextBreak)],
-        ['ELAPSED', TimeFormat.elapsed(s.elapsed)],
-    ];
+    ]];
     const p = props.pool;
     if (p && p.entries > 0) {
         const average = averageStack(p);
-        list.push(
+        list.push([
             ['PLAYERS', `${p.playersLeft} / ${p.entries}`],
             ['AVERAGE STACK', average === null ? '–' : chips(average)],
             ['PRIZE POOL', money(total(p), p.currency)],
-        );
+        ]);
     }
     return list;
 });
@@ -64,7 +64,7 @@ const items = computed(() => {
 
 <template>
     <div class="face" :data-theme="theme">
-        <div class="inner" :class="{ 'two-rows': items.length > 3 }">
+        <div class="inner" :class="{ 'two-rows': rows.length > 1 }">
             <div class="header">
                 <div class="title">{{ title }}</div>
                 <span v-if="pill" class="pill">{{ pill }}</span>
@@ -88,9 +88,11 @@ const items = computed(() => {
             </div>
 
             <dl class="footer">
-                <div v-for="[label, value] in items" :key="label">
-                    <dt>{{ label }}</dt>
-                    <dd :style="{ '--fit': fit(value) }">{{ value }}</dd>
+                <div v-for="(row, r) in rows" :key="r" class="footer-row" :style="{ '--columns': row.length }">
+                    <div v-for="[label, value] in row" :key="label">
+                        <dt>{{ label }}</dt>
+                        <dd :style="{ '--fit': fit(value) }">{{ value }}</dd>
+                    </div>
                 </div>
             </dl>
         </div>
@@ -125,7 +127,7 @@ const items = computed(() => {
  * wide and its contents add up to about 61 high (72 with a second footer row), so it fits either way.
  */
 .inner {
-    --u: min(1cqw, calc(100cqh / 61));
+    --u: min(1cqw, calc(100cqh / 62));
     --u-head: var(--u);
     --u-count: var(--u);
     --u-blinds: var(--u);
@@ -139,7 +141,7 @@ const items = computed(() => {
     font-variant-numeric: tabular-nums;
 }
 .inner.two-rows {
-    --u: min(1cqw, calc(100cqh / 72));
+    --u: min(1cqw, calc(100cqh / 73));
 }
 
 /* Portrait, e.g. a phone held upright: size things from the width and stack the footer in two columns. */
@@ -151,16 +153,6 @@ const items = computed(() => {
         --u-blinds: calc(100cqw / 80);
         --u-foot: calc(100cqw / 66);
         gap: calc(var(--u) * 3);
-    }
-    .footer {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-    /* Two columns: left and right (more specific than the three-column rules below). */
-    .inner .footer > div:nth-child(n) {
-        text-align: left;
-    }
-    .inner .footer > div:nth-child(2n) {
-        text-align: right;
     }
     .footer dd {
         font-size: calc(var(--u-foot) * 3.4 * var(--fit, 1));
@@ -197,7 +189,7 @@ const items = computed(() => {
     justify-content: center;
     width: calc(var(--u-head) * 4.4 * 1.2);
     height: calc(var(--u-head) * 4.4 * 1.2);
-    margin-right: calc(var(--u-head) * -1.056);
+    margin-right: calc(var(--u-head) * -1.584);
     /* Centered on the title without making the row taller. */
     margin-block: calc(var(--u-head) * -2);
     border-radius: 999px;
@@ -223,10 +215,9 @@ const items = computed(() => {
     color: white;
     background: rgb(255 255 255 / 0.1);
 }
-/* The arrows fill 80 % of the icon, so at 75 % of the button they're as tall as the capitals of the title. */
 .corner :slotted(svg) {
-    width: 75%;
-    height: 75%;
+    width: 50%;
+    height: 50%;
 }
 .pill {
     grid-column: 2;
@@ -252,6 +243,7 @@ const items = computed(() => {
     min-height: 0;
 }
 .countdown {
+    margin-bottom: calc(var(--u) * 2);
     font-size: calc(var(--u-count) * 19);
     font-weight: 500;
     line-height: 1;
@@ -307,16 +299,21 @@ const items = computed(() => {
 }
 
 .footer {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: calc(var(--u-foot) * 3);
+    display: flex;
+    flex-direction: column;
     row-gap: calc(var(--u-foot) * 2.2);
     margin: 0;
 }
-.footer > div:nth-child(3n + 2) {
+/* Each row spreads out: the first item on the left, the last on the right, any other in the middle. */
+.footer-row {
+    display: grid;
+    grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+    column-gap: calc(var(--u-foot) * 3);
+}
+.footer-row > div:not(:first-child, :last-child) {
     text-align: center;
 }
-.footer > div:nth-child(3n) {
+.footer-row > div:last-child:not(:first-child) {
     text-align: right;
 }
 .footer dt {
