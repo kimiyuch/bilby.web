@@ -33,7 +33,7 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', onHash));
 
 <template>
     <div class="min-h-dvh">
-        <div class="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-linear-to-b from-ochre-50 to-white"></div>
+        <div class="fixed inset-0 -z-10 bg-linear-to-b from-ochre-50 to-ochre-200"></div>
 
         <header class="mx-auto flex max-w-6xl items-center justify-between gap-x-6 px-4 py-5 sm:px-6 lg:px-8">
             <a href="/" aria-label="Homepage" class="font-display text-xl font-semibold text-chip-950">Bilby</a>
