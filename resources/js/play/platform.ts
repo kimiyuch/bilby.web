@@ -70,3 +70,13 @@ export function installShortcuts(): void {
         action();
     });
 }
+
+/**
+ * On an iPhone or iPad in the browser: there the clock can't go truly full screen, but it can from the Home
+ * Screen. iPads say they're Macs, so look for touch as well.
+ */
+export function canAddToHomeScreen(): boolean {
+    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const standalone = matchMedia('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone === true;
+    return ios && !standalone;
+}

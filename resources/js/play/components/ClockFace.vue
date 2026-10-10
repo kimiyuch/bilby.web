@@ -189,6 +189,8 @@ const stat = computed(() => {
         --u-blinds: calc(100cqw / 80);
         --u-foot: calc(100cqw / 66);
         gap: calc(var(--u) * 3);
+        /* A phone's rounded corners need more room than a card on the page. */
+        padding: calc(var(--u) * 6);
     }
     .inner .footer dd {
         font-size: calc(var(--u-foot) * 3 * var(--fit, 1));

@@ -8,6 +8,7 @@ import * as store from '../store';
 import ClockControls from './ClockControls.vue';
 import ClockMenu from './ClockMenu.vue';
 import ClockFaceFrame from './ClockFaceFrame.vue';
+import HomeScreenHint from './HomeScreenHint.vue';
 
 const frame = ref<InstanceType<typeof ClockFaceFrame>>();
 const face = computed(() => frame.value?.$el as HTMLElement | undefined);
@@ -46,5 +47,6 @@ const quiet = computed(() => soundBlocked.value && !store.settings.muted && stor
         <p v-if="quiet" class="mx-auto rounded-full bg-ochre-100 px-4 py-1.5 text-center text-sm/6 font-medium text-ochre-900">
             Your browser keeps Bilby quiet until you click somewhere on the page.
         </p>
+        <HomeScreenHint />
     </div>
 </template>
