@@ -14,18 +14,18 @@ html {
     --font-sans--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     --font-display: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-    /* Desert ochre, from the background of the app icon. */
+    /* Desert ochre: the light background from the app icon, with a terracotta accent from 200 up. */
     --color-ochre-50: #fdf8ef;
     --color-ochre-100: #faedd5;
-    --color-ochre-200: #f4d9a8;
-    --color-ochre-300: #f0c77e;
-    --color-ochre-400: #e5a95c;
-    --color-ochre-500: #d08a45;
-    --color-ochre-600: #b86f34;
-    --color-ochre-700: #96552c;
-    --color-ochre-800: #7a4529;
-    --color-ochre-900: #643a25;
-    --color-ochre-950: #371c11;
+    --color-ochre-200: #f2c4b5;
+    --color-ochre-300: #e9a08a;
+    --color-ochre-400: #dc7a60;
+    --color-ochre-500: #c85a40;
+    --color-ochre-600: #ad4632;
+    --color-ochre-700: #8f382b;
+    --color-ochre-800: #752f27;
+    --color-ochre-900: #612a24;
+    --color-ochre-950: #351310;
 
     /* Poker chip teal, from the chip in the icon. */
     --color-chip-50: #eef7f9;
@@ -46,3 +46,4 @@ html {
     --color-felt-warning: #f5ad45;
     --color-felt-break: #63ccb8;
 }
+
