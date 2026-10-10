@@ -61,6 +61,10 @@
     select.field {
         @apply appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23737373'%3E%3Cpath%20fill-rule='evenodd'%20d='M5.22%208.22a.75.75%200%200%201%201.06%200L10%2011.94l3.72-3.72a.75.75%200%201%201%201.06%201.06l-4.25%204.25a.75.75%200%200%201-1.06%200L5.22%209.28a.75.75%200%200%201%200-1.06Z'%20clip-rule='evenodd'/%3E%3C/svg%3E")] bg-size-[1.25rem] bg-position-[right_0.4rem_center] bg-no-repeat pr-8;
     }
+    /* A smaller checkbox than the browser's, petrol when on, with a small checkmark. */
+    .checkbox {
+        @apply size-4 shrink-0 appearance-none rounded-[0.25rem] bg-white bg-center bg-no-repeat bg-size-[0.625rem] outline-1 -outline-offset-1 outline-neutral-950/25 checked:bg-chip-600 checked:outline-chip-600 checked:bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2014%2014'%20fill='none'%3E%3Cpath%20d='M3%207.5%205.75%2010.25%2011%204.25'%20stroke='white'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E")] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:opacity-40;
+    }
     .label {
         @apply block text-sm/6 font-medium text-neutral-700;
     }

@@ -33,7 +33,7 @@
     "isEntry": true
   },
   "resources/css/play.css": {
-    "file": "assets/play-C0nm4zLZ.css",
+    "file": "assets/play-BlzOSpqC.css",
     "name": "play",
     "names": [
       "play.css"
@@ -48,7 +48,7 @@
     "isEntry": true
   },
   "resources/js/play/main.ts": {
-    "file": "assets/main-DCOq5njB.js",
+    "file": "assets/main-BxDFtMZN.js",
     "name": "main",
     "src": "resources/js/play/main.ts",
     "isEntry": true,
