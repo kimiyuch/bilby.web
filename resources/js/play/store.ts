@@ -38,7 +38,7 @@ function loadLibrary(): Structure[] {
 export const tournament = shallowRef<Tournament>(Tournament.decode(load(keys.tournament)) ?? Tournament.fresh());
 export const library = ref<Structure[]>(loadLibrary());
 export const settings = reactive<Settings>(decodeSettings(load(keys.settings)));
-/** Advances several times a second; views compute what they show from it. */
+/** Advances each time the display changes; views compute what they show from it. */
 export const now = ref(nowSeconds());
 /** Whether the clock is running right now (it stops by itself after the last level). */
 export const isRunning = ref(false);
@@ -129,6 +129,22 @@ function change(body: (t: Tournament, at: number) => void): void {
     lastTick = at;
     save(keys.tournament, t);
     changed(at);
+    scheduleTick();
+}
+
+let setTimer: (ms: number) => void = () => {};
+
+/**
+ * Sets the timer for the moment the display next changes: the countdown's next second while the clock runs, the
+ * next second of the time of day while it's paused. A little late rather than early, so the new second is there.
+ */
+function scheduleTick(): void {
+    const at = nowSeconds();
+    const t = tournament.value;
+    const clock = t.clock.caughtUp(t.structure, at);
+    const toward = clock.isRunning ? clock.remaining(at) : -at;
+    const left = toward - Math.floor(toward) || 1;
+    setTimer(Math.round(left * 1000) + 15);
 }
 
 function changed(at: number): void {
@@ -139,32 +155,43 @@ function changed(at: number): void {
 }
 
 export function tick(at: number = nowSeconds()): void {
-    const from = lastTick;
-    lastTick = at;
-    now.value = at;
-    const t = tournament.value;
-    const clock = t.clock.caughtUp(t.structure, at);
-    if (clock.roundIndex !== lastRoundIndex || clock.isRunning !== isRunning.value) changed(at);
-    if (at <= from || eventHandlers.length === 0) return;
-    const due = t.clock.upcomingEvents(t.structure, from, settings.warningSeconds).filter((e) => e.at <= at);
-    // After sleep, don't replay a pile of old alerts; only the ones that just happened.
-    for (const event of due) {
-        if (at - event.at < 5) for (const handler of eventHandlers) handler(event);
+    try {
+        const from = lastTick;
+        lastTick = at;
+        now.value = at;
+        const t = tournament.value;
+        const clock = t.clock.caughtUp(t.structure, at);
+        if (clock.roundIndex !== lastRoundIndex || clock.isRunning !== isRunning.value) changed(at);
+        if (at <= from || eventHandlers.length === 0) return;
+        const due = t.clock.upcomingEvents(t.structure, from, settings.warningSeconds).filter((e) => e.at <= at);
+        // After sleep, don't replay a pile of old alerts; only the ones that just happened.
+        for (const event of due) {
+            if (at - event.at < 5) for (const handler of eventHandlers) handler(event);
+        }
+    } finally {
+        scheduleTick();
     }
 }
 
 /**
- * Ticks four times a second. The timer runs in a worker where it can, because browsers slow down timers in
- * background tabs, and the sounds should still play on time when the clock isn't the front tab.
+ * Ticks each time the countdown reaches its next second, so every second stays on screen equally long. The timer
+ * runs in a worker where it can, because browsers slow down timers in background tabs, and the sounds should
+ * still play on time when the clock isn't the front tab.
  */
 export function startTicking(): void {
     changed(nowSeconds());
     try {
         const worker = new Worker(new URL('./ticker.ts', import.meta.url), { type: 'module' });
         worker.onmessage = () => tick();
+        setTimer = (ms) => worker.postMessage(ms);
     } catch {
-        window.setInterval(() => tick(), 250);
+        let timer: number | undefined;
+        setTimer = (ms) => {
+            window.clearTimeout(timer);
+            timer = window.setTimeout(() => tick(), ms);
+        };
     }
+    scheduleTick();
     // Other windows of Bilby write to the same storage; follow their changes.
     window.addEventListener('storage', (event) => {
         if (event.key === keys.tournament) {
@@ -173,6 +200,7 @@ export function startTicking(): void {
                 tournament.value = t;
                 lastTick = nowSeconds();
                 changed(lastTick);
+                scheduleTick();
             }
         } else if (event.key === keys.settings) {
             applyingRemoteSettings = true;

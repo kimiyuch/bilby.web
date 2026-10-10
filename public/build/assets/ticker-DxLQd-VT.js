@@ -1,0 +1,1 @@
+(function(){let e;onmessage=t=>{clearTimeout(e),e=setTimeout(()=>postMessage(0),t.data)}})();
