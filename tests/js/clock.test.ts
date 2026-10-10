@@ -27,6 +27,19 @@ describe('Clock', () => {
         expect(s.untilNextBreak).toBe(1200);
     });
 
+    test('next second follows the countdown', () => {
+        const clock = Clock.start(structure);
+        clock.start(structure, at(0.4));
+        expect(clock.nextSecond(structure, at(1))).toBeCloseTo(at(1.4), 6);
+        expect(clock.nextSecond(structure, at(1.4))).toBeCloseTo(at(2.4), 6);
+    });
+
+    test('next second follows the time of day while paused', () => {
+        const clock = Clock.start(structure);
+        expect(clock.nextSecond(structure, at(0.25))).toBeCloseTo(at(1), 6);
+        expect(clock.nextSecond(structure, t0)).toBeCloseTo(at(1), 6);
+    });
+
     test('counts down from the end date', () => {
         const clock = Clock.start(structure);
         clock.start(structure, t0);

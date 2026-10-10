@@ -18,10 +18,26 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Check that the built assets are committed
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: JavaScript tests and types
         run: |
-          test -f public/build/manifest.json || {
-            echo "::error::public/build is missing. Run 'npm run build' locally and commit the result."
+          npm ci
+          npm test
+          npm run typecheck
+
+      - name: Check that the committed assets match the source
+        run: |
+          npm run build
+          git diff --exit-code --stat -- public/build || {
+            echo "::error::public/build is out of date. Run 'npm run build' locally and commit the result."
+            exit 1
+          }
+          test -z "$(git status --porcelain -- public/build)" || {
+            echo "::error::public/build has new files. Run 'npm run build' locally and commit the result."
             exit 1
           }
 

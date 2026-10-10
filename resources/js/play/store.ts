@@ -134,17 +134,11 @@ function change(body: (t: Tournament, at: number) => void): void {
 
 let setTimer: (ms: number) => void = () => {};
 
-/**
- * Sets the timer for the moment the display next changes: the countdown's next second while the clock runs, the
- * next second of the time of day while it's paused. A little late rather than early, so the new second is there.
- */
+/** Sets the timer for the moment the display next changes; a little late rather than early, so it has. */
 function scheduleTick(): void {
     const at = nowSeconds();
     const t = tournament.value;
-    const clock = t.clock.caughtUp(t.structure, at);
-    const toward = clock.isRunning ? clock.remaining(at) : -at;
-    const left = toward - Math.floor(toward) || 1;
-    setTimer(Math.round(left * 1000) + 15);
+    setTimer(Math.round((t.clock.nextSecond(t.structure, at) - at) * 1000) + 15);
 }
 
 function changed(at: number): void {

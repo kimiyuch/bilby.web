@@ -23,6 +23,14 @@ fi
 echo "Running tests…"
 php artisan test
 npm test --silent
+npm run typecheck --silent
+
+# The built assets are committed; make sure they come from the committed source.
+npm run build --silent >/dev/null
+if [[ -n $(git status --porcelain) ]]; then
+  echo "public/build was out of date and is rebuilt now. Commit it, then deploy again."
+  exit 1
+fi
 
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT

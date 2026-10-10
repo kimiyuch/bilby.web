@@ -109,6 +109,17 @@ export class Clock {
         return this.state.elapsedBefore + (since === null ? 0 : Math.max(0, now - since));
     }
 
+    /**
+     * When the display next changes: the countdown's next second while the clock runs, the next second of the
+     * time of day while it's paused. Ticking then keeps every second on screen equally long.
+     */
+    nextSecond(s: Structure, now: number): number {
+        const clock = this.caughtUp(s, now);
+        const toward = clock.isRunning ? clock.remaining(now) : -now;
+        const left = toward - Math.floor(toward);
+        return now + (left === 0 ? 1 : left);
+    }
+
     snapshot(s: Structure, now: number): ClockSnapshot {
         return makeSnapshot(this.caughtUp(s, now), s, now);
     }
