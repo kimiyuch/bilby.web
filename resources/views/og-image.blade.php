@@ -14,7 +14,7 @@
             <p class="mt-2 max-w-[20ch] font-display text-5xl font-medium tracking-tight text-balance text-chip-800">
                 Keeps an eye on the big blind.
             </p>
-            <p class="mt-8 text-2xl text-neutral-600">A poker tournament clock for Mac, iPad and iPhone.</p>
+            <p class="mt-8 text-2xl text-balance text-neutral-600">A poker tournament clock for your browser, Mac, iPad and iPhone.</p>
             <p class="mt-2 text-2xl font-medium text-ochre-600">bilby.kimiyu.ch</p>
         </div>
     </div>

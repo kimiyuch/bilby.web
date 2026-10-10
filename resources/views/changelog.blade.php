@@ -1,6 +1,14 @@
 @php
     $releases = [
         [
+            'version' => '0.1.2',
+            'date' => '2026-10-10',
+            'changes' => [
+                'The clock looks like the browser version: the level, the countdown and the blinds, and a footer with the next level, the next break and a stat in the middle that changes every 12 seconds (levels, players, average stack, prize pool, first place, chips in play, and when the level and the next break start). Amounts are shorter (1.2k), and money shows its currency first.',
+                'The controls are a player strip under the clock: the structure being played, previous, start/pause and next, and a menu with a minute more or less, restart, mute and reset. A button in the corner of the clock opens full screen (the big screen on the Mac).',
+            ],
+        ],
+        [
             'version' => '0.1.1',
             'date' => '2026-10-10',
             'changes' => [

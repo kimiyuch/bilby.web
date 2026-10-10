@@ -15,7 +15,7 @@
     <meta property="og:title" content="Bilby: a poker tournament clock in your browser">
     <meta property="og:description" content="A calm poker tournament clock. Bilby keeps an eye on the big blind, so you can keep yours on the cards.">
     <meta property="og:url" content="{{ url('/play') }}">
-    <meta property="og:image" content="{{ asset('images/og.png?v=2') }}">
+    <meta property="og:image" content="{{ asset('images/og.png?v=3') }}">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png?v=2') }}">
