@@ -94,3 +94,16 @@ dialog::backdrop {
     background: rgb(17 40 50 / 0.35);
     backdrop-filter: blur(2px);
 }
+
+/* While the clock is pinned over the page (no full screen on the iPhone), the margins the browser keeps around it
+   show the page's background: give them the clock's color, which follows its theme. */
+html.clock-pinned {
+    overflow: hidden;
+    background-color: var(--color-felt);
+}
+html.clock-pinned:has([data-theme='ending']) {
+    background-color: #291b09;
+}
+html.clock-pinned:has([data-theme='break']) {
+    background-color: #092120;
+}

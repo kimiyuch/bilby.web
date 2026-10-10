@@ -3,6 +3,11 @@
 
 import { onBeforeUnmount, onMounted, type Ref, ref } from 'vue';
 
+/** Safari tints its toolbar with the page's theme color. */
+function themeColor(color: string) {
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color);
+}
+
 export function useFullScreen(element: Readonly<Ref<HTMLElement | undefined>>) {
     const isFullScreen = ref(false);
     /** True while the fallback is in use. */
@@ -10,6 +15,10 @@ export function useFullScreen(element: Readonly<Ref<HTMLElement | undefined>>) {
 
     const update = () => {
         isFullScreen.value = document.fullscreenElement === element.value || pinned.value;
+        // The browser keeps its safe areas (next to the notch, under the toolbar) and shows the page's background
+        // there; play.css colors it like the clock while it's pinned.
+        document.documentElement.classList.toggle('clock-pinned', pinned.value);
+        themeColor(pinned.value ? '#101316' : '#fdf8ef');
     };
 
     const enter = async () => {
@@ -47,6 +56,8 @@ export function useFullScreen(element: Readonly<Ref<HTMLElement | undefined>>) {
         window.addEventListener('keydown', escape);
     });
     onBeforeUnmount(() => {
+        document.documentElement.classList.remove('clock-pinned');
+        themeColor('#fdf8ef');
         document.removeEventListener('fullscreenchange', update);
         window.removeEventListener('keydown', escape);
     });
