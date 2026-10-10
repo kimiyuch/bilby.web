@@ -1,6 +1,13 @@
 @php
     $releases = [
         [
+            'version' => '0.1.3',
+            'date' => '2026-10-10',
+            'changes' => [
+                'The countdown moves on evenly: each second now stays on screen for a full second, instead of some seconds looking shorter than others.',
+            ],
+        ],
+        [
             'version' => '0.1.2',
             'date' => '2026-10-10',
             'changes' => [
