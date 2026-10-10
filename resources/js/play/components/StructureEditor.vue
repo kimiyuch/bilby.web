@@ -161,7 +161,7 @@ const saveToLibrary = () => {
 <template>
     <div class="mx-auto max-w-6xl px-6 pb-16 lg:px-8">
         <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
-            <div class="min-w-0 flex-1">
+            <div class="min-w-0 flex-1 basis-80">
                 <p class="eyebrow">Blind structure</p>
                 <input
                     :key="structure.id + structure.name"
