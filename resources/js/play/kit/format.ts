@@ -75,6 +75,22 @@ export const chips = (n: number): string => numberFormat.format(n);
 
 export const blindsText = (r: Round): string => `${chips(r.smallBlind)} / ${chips(r.bigBlind)}`;
 
+const compactNumber = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 });
+
+/** Short chip amounts for tight spaces: 800, 1k, 1.5k, 11.1k, 100k, 1.2M. Rounds down, so 1,999 reads 1.9k. */
+export function compactChips(n: number): string {
+    const short = (value: number, suffix: string) => compactNumber.format(Math.floor(value * 10) / 10) + suffix;
+    if (Math.abs(n) >= 1_000_000) return short(n / 1_000_000, 'M');
+    if (Math.abs(n) >= 1_000) return short(n / 1_000, 'k');
+    return compactNumber.format(n);
+}
+
+/** "200 / 400 · 400" with short amounts: "1k / 2k · 2k". */
+export const compactText = (r: Round): string => {
+    const blinds = `${compactChips(r.smallBlind)} / ${compactChips(r.bigBlind)}`;
+    return r.ante > 0 ? `${blinds} · ${compactChips(r.ante)}` : blinds;
+};
+
 export const anteText = (r: Round): string | null => {
     if (r.ante <= 0) return null;
     return r.anteStyle === 'bigBlind' ? `Big blind ante ${chips(r.ante)}` : `Ante ${chips(r.ante)}`;

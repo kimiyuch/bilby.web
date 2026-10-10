@@ -1,7 +1,7 @@
 // Ported from BilbyKit/Tests/BilbyKitTests: GeneratorTests, PrizePoolTests and StructureTests.
 
 import { describe, expect, test } from 'vitest';
-import { Announcement, TimeFormat, place } from '../../resources/js/play/kit/format';
+import { Announcement, TimeFormat, compactChips, compactText, place } from '../../resources/js/play/kit/format';
 import {
     type GeneratorOptions, colorUpNote, defaultGeneratorOptions, generateStructure, mantissas, niceBlind,
 } from '../../resources/js/play/kit/generator';
@@ -303,6 +303,10 @@ describe('TimeFormat', () => {
         expect(TimeFormat.duration(65)).toBe('1 h 5 min');
         expect(TimeFormat.duration(120)).toBe('2 h');
         expect(TimeFormat.duration(45)).toBe('45 min');
+        expect([800, 1000, 1500, 1999, 11_111, 100_000, 1_200_000].map(compactChips))
+            .toEqual(['800', '1k', '1.5k', '1.9k', '11.1k', '100k', '1.2M']);
+        expect(compactText(level(500, 1000, 20, 1000))).toBe('500 / 1k · 1k');
+        expect(compactText(level(25, 50, 20))).toBe('25 / 50');
         expect([1, 2, 3, 4, 11, 12, 13, 21, 22].map(place)).toEqual(['1st', '2nd', '3rd', '4th', '11th', '12th', '13th', '21st', '22nd']);
     });
 });

@@ -3,14 +3,16 @@
 // container and scales with it, from a card on the page up to a projector.
 import { computed } from 'vue';
 import type { ClockSnapshot } from '../kit/clock';
-import { TimeFormat, anteText, blindsText, chips, money, shortText } from '../kit/format';
-import { type PrizePool, averageStack, total } from '../kit/prizePool';
+import { TimeFormat, anteText, blindsText, compactChips, compactText, money } from '../kit/format';
+import { type PrizePool, averageStack, chipsInPlay, payouts, total } from '../kit/prizePool';
 
 const props = defineProps<{
     snapshot: ClockSnapshot;
     warningSeconds: number;
-    /** Shown in a second footer row once players have entered. */
+    /** Its numbers take turns in the middle of the footer once players have entered. */
     pool?: PrizePool | null;
+    /** Seconds since 1970; drives the turns. */
+    now: number;
 }>();
 
 /** Always dark: calm during play, warm amber when a level is about to end, teal on a break. */
@@ -36,35 +38,56 @@ const next = computed(() => {
     const next = props.snapshot.nextRound;
     if (!next) return 'Last level';
     if (next.type === 'break') return `Break · ${next.minutes} min`;
-    return shortText(next);
+    return compactText(next);
 });
 
 /** About 12 characters fit a footer column; longer values shrink, down to 60 % (minimumScaleFactor in the app). */
 const fit = (value: string) => Math.max(0.6, Math.min(1, 12 / value.length));
 
-/** The footer: what comes next, and once players have entered, a second row with the money. */
-const rows = computed(() => {
+/** The footer: the next level on the left, the next break on the right. */
+const nextBreak = computed(() => {
     const s = props.snapshot;
-    const list: [string, string][][] = [[
-        ['NEXT', next.value],
-        ['NEXT BREAK', s.untilNextBreak === null ? '–' : TimeFormat.countdown(s.untilNextBreak)],
-    ]];
+    return s.untilNextBreak === null ? '–' : TimeFormat.countdown(s.untilNextBreak);
+});
+
+const timeOfDay = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' });
+
+/** What takes turns in the middle of the footer: the players and the money, and when the level ends. */
+const stats = computed(() => {
+    const s = props.snapshot;
+    const list: [string, string][] = [];
     const p = props.pool;
     if (p && p.entries > 0) {
         const average = averageStack(p);
-        list.push([
-            ['PLAYERS', `${p.playersLeft} / ${p.entries}`],
-            ['AVERAGE STACK', average === null ? '–' : chips(average)],
-            ['PRIZE POOL', money(total(p), p.currency)],
-        ]);
+        list.push(['PLAYERS', `${p.playersLeft} / ${p.entries}`]);
+        if (average !== null) {
+            list.push(['AVERAGE STACK', compactChips(average)]);
+            if (!s.isBreak && s.round.bigBlind > 0) list.push(['AVERAGE IN BB', `${Math.round(average / s.round.bigBlind)} BB`]);
+        }
+        if (total(p) > 0) {
+            list.push(['PRIZE POOL', money(total(p), p.currency)]);
+            list.push(['FIRST PLACE', money(payouts(p)[0] ?? 0, p.currency)]);
+        }
+        list.push(['CHIPS IN PLAY', compactChips(chipsInPlay(p))]);
+    }
+    if (s.isRunning && s.endsAt !== null) {
+        list.push([s.isBreak ? 'BREAK ENDS AT' : 'LEVEL ENDS AT', timeOfDay.format(new Date(s.endsAt * 1000))]);
     }
     return list;
+});
+
+/** Each stat stays for a few seconds. Counted from the clock, so every window shows the same one. */
+const statSeconds = 6;
+const stat = computed(() => {
+    const list = stats.value;
+    if (list.length === 0) return null;
+    return list[Math.floor(props.now / statSeconds) % list.length];
 });
 </script>
 
 <template>
     <div class="face" :data-theme="theme">
-        <div class="inner" :class="{ 'two-rows': rows.length > 1 }">
+        <div class="inner">
             <div class="header">
                 <div class="title">{{ title }}</div>
                 <span v-if="pill" class="pill">{{ pill }}</span>
@@ -88,11 +111,20 @@ const rows = computed(() => {
             </div>
 
             <dl class="footer">
-                <div v-for="(row, r) in rows" :key="r" class="footer-row" :style="{ '--columns': row.length }">
-                    <div v-for="[label, value] in row" :key="label">
-                        <dt>{{ label }}</dt>
-                        <dd :style="{ '--fit': fit(value) }">{{ value }}</dd>
+                <div>
+                    <dt>NEXT</dt>
+                    <dd :style="{ '--fit': fit(next) }">{{ next }}</dd>
+                </div>
+                <Transition name="stat" mode="out-in">
+                    <div v-if="stat" :key="stat[0]" class="stat">
+                        <dt>{{ stat[0] }}</dt>
+                        <dd :style="{ '--fit': fit(stat[1]) }">{{ stat[1] }}</dd>
                     </div>
+                    <div v-else class="stat"></div>
+                </Transition>
+                <div class="end">
+                    <dt>NEXT BREAK</dt>
+                    <dd>{{ nextBreak }}</dd>
                 </div>
             </dl>
         </div>
@@ -124,7 +156,7 @@ const rows = computed(() => {
 
 /*
  * Everything is sized from one unit, so the layout keeps its proportions at any size. The face is 100 units
- * wide and its contents add up to about 61 high (72 with a second footer row), so it fits either way.
+ * wide and its contents add up to about 62 high.
  */
 .inner {
     --u: min(1cqw, calc(100cqh / 62));
@@ -140,9 +172,6 @@ const rows = computed(() => {
     gap: calc(var(--u) * 1.6);
     font-variant-numeric: tabular-nums;
 }
-.inner.two-rows {
-    --u: min(1cqw, calc(100cqh / 73));
-}
 
 /* Portrait, e.g. a phone held upright: size things from the width and stack the footer in two columns. */
 @container (aspect-ratio < 10 / 11) {
@@ -154,8 +183,12 @@ const rows = computed(() => {
         --u-foot: calc(100cqw / 66);
         gap: calc(var(--u) * 3);
     }
-    .footer dd {
-        font-size: calc(var(--u-foot) * 3.4 * var(--fit, 1));
+    .inner .footer dd {
+        font-size: calc(var(--u-foot) * 3 * var(--fit, 1));
+    }
+    /* On a narrow screen the outer columns take what they need, the stat the rest (more specific than below). */
+    .inner .footer {
+        grid-template-columns: auto minmax(0, 1fr) auto;
     }
 }
 
@@ -298,25 +331,35 @@ const rows = computed(() => {
     transition: background-color 0.6s ease-in-out;
 }
 
+/* The next level on the left, a stat in the middle that changes every few seconds, the next break on the right. */
 .footer {
-    display: flex;
-    flex-direction: column;
-    row-gap: calc(var(--u-foot) * 2.2);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: calc(var(--u-foot) * 3);
     margin: 0;
 }
-/* Each row spreads out: the first item on the left, the last on the right, any other in the middle. */
-.footer-row {
-    display: grid;
-    grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
-    column-gap: calc(var(--u-foot) * 3);
-}
-.footer-row > div:not(:first-child, :last-child) {
+.footer .stat {
     text-align: center;
 }
-.footer-row > div:last-child:not(:first-child) {
+.footer .end {
     text-align: right;
 }
+.stat-enter-active,
+.stat-leave-active {
+    transition: opacity 0.4s ease, translate 0.4s ease;
+}
+.stat-enter-from {
+    opacity: 0;
+    translate: 0 calc(var(--u-foot) * 1);
+}
+.stat-leave-to {
+    opacity: 0;
+    translate: 0 calc(var(--u-foot) * -1);
+}
 .footer dt {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: calc(var(--u-foot) * 1.9);
     font-weight: 600;
     letter-spacing: 0.1em;

@@ -28,6 +28,7 @@ onBeforeUnmount(() => window.clearTimeout(hideTimer));
             :snapshot="snapshot"
             :warning-seconds="store.settings.warningSeconds"
             :pool="store.tournament.value.prizePool"
+            :now="store.now.value"
         >
             <template #corner><slot name="corner" /></template>
         </ClockFace>
