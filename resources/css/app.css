@@ -1,0 +1,43 @@
+@import 'tailwindcss' source(none);
+
+/* Only scan the templates; nothing else in the project contains classes. */
+@source '../views';
+@source '../js';
+
+@theme {
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-sans--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    --font-display: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+    /* Desert ochre, from the background of the app icon. */
+    --color-ochre-50: #fdf8ef;
+    --color-ochre-100: #faedd5;
+    --color-ochre-200: #f4d9a8;
+    --color-ochre-300: #f0c77e;
+    --color-ochre-400: #e5a95c;
+    --color-ochre-500: #d08a45;
+    --color-ochre-600: #b86f34;
+    --color-ochre-700: #96552c;
+    --color-ochre-800: #7a4529;
+    --color-ochre-900: #643a25;
+    --color-ochre-950: #371c11;
+
+    /* Poker chip teal, from the chip in the icon. */
+    --color-chip-50: #eef7f9;
+    --color-chip-100: #d5eaf0;
+    --color-chip-200: #aed6e1;
+    --color-chip-300: #7cbacb;
+    --color-chip-400: #4f97ad;
+    --color-chip-500: #3a7f96;
+    --color-chip-600: #2f6f86;
+    --color-chip-700: #24576a;
+    --color-chip-800: #224a59;
+    --color-chip-900: #1f3f4c;
+    --color-chip-950: #112832;
+
+    /* The clock face itself, as in the app: dark, with an amber warning and teal breaks. */
+    --color-felt: #101316;
+    --color-felt-accent: #9eb5c9;
+    --color-felt-warning: #f5ad45;
+    --color-felt-break: #63ccb8;
+}
