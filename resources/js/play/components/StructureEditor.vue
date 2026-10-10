@@ -167,7 +167,7 @@ const saveToLibrary = () => {
                     :key="structure.id + structure.name"
                     :value="structure.name"
                     aria-label="Name"
-                    class="mt-1 w-full rounded-md bg-transparent px-1 -mx-1 font-display text-3xl font-semibold tracking-tight text-chip-950 outline-none hover:bg-white/60 focus:bg-white focus:ring-2 focus:ring-chip-600"
+                    class="mt-1 w-full rounded-md bg-transparent px-1 -mx-1 font-display text-3xl font-semibold tracking-tight text-chip-950 outline-none hover:bg-white/60 focus:bg-white focus:ring-2 focus:ring-ochre-500"
                     @change="setName"
                     @keydown.enter="($event.target as HTMLInputElement).blur()"
                 >

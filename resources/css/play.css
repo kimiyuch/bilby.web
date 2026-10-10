@@ -5,7 +5,7 @@
 
 @layer components {
     .btn {
-        @apply inline-flex items-center justify-center gap-x-2 rounded-full px-4 py-2 text-sm/5 font-medium whitespace-nowrap ring-1 ring-chip-950/10 ring-inset text-chip-900 bg-white hover:bg-chip-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:pointer-events-none disabled:opacity-40;
+        @apply inline-flex items-center justify-center gap-x-2 rounded-full px-4 py-2 text-sm/5 font-medium whitespace-nowrap ring-1 ring-ochre-400 ring-inset text-chip-900 bg-white hover:bg-ochre-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ochre-500 disabled:pointer-events-none disabled:opacity-40;
     }
     .btn-primary {
         @apply bg-chip-600 text-white ring-0 shadow-sm hover:bg-chip-700;
@@ -14,7 +14,7 @@
         @apply bg-red-600 text-white ring-0 shadow-sm hover:bg-red-700;
     }
     .btn-plain {
-        @apply ring-0 bg-transparent hover:bg-chip-950/5;
+        @apply ring-0 bg-transparent hover:bg-ochre-100;
     }
     .btn-icon {
         @apply relative size-9 p-0;
@@ -56,7 +56,7 @@
     }
 
     .field {
-        @apply block w-full rounded-md bg-white px-2.5 py-1.5 text-base/6 text-neutral-950 tabular-nums outline-1 -outline-offset-1 outline-neutral-950/15 placeholder:text-neutral-400 focus:outline-2 focus:-outline-offset-2 focus:outline-chip-600 disabled:bg-neutral-50 disabled:text-neutral-400 sm:text-sm/6;
+        @apply block w-full rounded-md bg-white px-2.5 py-1.5 text-base/6 text-neutral-950 tabular-nums outline-1 -outline-offset-1 outline-neutral-950/15 placeholder:text-neutral-400 focus:outline-2 focus:-outline-offset-2 focus:outline-ochre-500 disabled:bg-neutral-50 disabled:text-neutral-400 sm:text-sm/6;
     }
     select.field {
         @apply appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23737373'%3E%3Cpath%20fill-rule='evenodd'%20d='M5.22%208.22a.75.75%200%200%201%201.06%200L10%2011.94l3.72-3.72a.75.75%200%201%201%201.06%201.06l-4.25%204.25a.75.75%200%200%201-1.06%200L5.22%209.28a.75.75%200%200%201%200-1.06Z'%20clip-rule='evenodd'/%3E%3C/svg%3E")] bg-size-[1.25rem] bg-position-[right_0.4rem_center] bg-no-repeat pr-8;
@@ -75,7 +75,7 @@
     @apply absolute z-30 w-56 rounded-xl bg-white p-1 text-sm/6 text-neutral-800 shadow-lg ring-1 ring-chip-950/10;
 }
 @utility menu-item {
-    @apply flex w-full items-center justify-between gap-x-4 rounded-lg px-3 py-1.5 text-left hover:bg-chip-50 disabled:pointer-events-none disabled:opacity-40 pointer-coarse:py-2.5;
+    @apply flex w-full items-center justify-between gap-x-4 rounded-lg px-3 py-1.5 text-left hover:bg-ochre-50 disabled:pointer-events-none disabled:opacity-40 pointer-coarse:py-2.5;
 }
 @utility menu-separator {
     @apply my-1 border-neutral-950/5;

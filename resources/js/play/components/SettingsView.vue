@@ -75,7 +75,7 @@ const voiceName = (v: SpeechSynthesisVoice) => {
             <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                 <label class="row cursor-pointer">
                     <span class="text-sm/6 font-medium text-neutral-700">Announce levels and breaks</span>
-                    <input v-model="s.announce" type="checkbox" class="size-5 accent-chip-600">
+                    <input v-model="s.announce" type="checkbox" class="size-5 accent-ochre-500">
                 </label>
                 <div class="row">
                     <label for="voice" class="text-sm/6 font-medium text-neutral-700">Voice</label>
@@ -96,12 +96,12 @@ const voiceName = (v: SpeechSynthesisVoice) => {
             <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                 <div class="row">
                     <Icon name="speaker-x-mark" class="size-5 shrink-0 text-neutral-400" />
-                    <input v-model.number="s.volume" type="range" min="0" max="1" step="0.05" class="flex-1 accent-chip-600" aria-label="Volume" :disabled="s.muted">
+                    <input v-model.number="s.volume" type="range" min="0" max="1" step="0.05" class="flex-1 accent-ochre-500" aria-label="Volume" :disabled="s.muted">
                     <Icon name="speaker-wave" class="size-5 shrink-0 text-neutral-400" />
                 </div>
                 <label class="row cursor-pointer">
                     <span class="text-sm/6 font-medium text-neutral-700">Mute</span>
-                    <input v-model="s.muted" type="checkbox" class="size-5 accent-chip-600">
+                    <input v-model="s.muted" type="checkbox" class="size-5 accent-ochre-500">
                 </label>
             </div>
         </section>
