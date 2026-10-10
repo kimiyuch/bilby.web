@@ -90,9 +90,12 @@
     @apply font-display text-lg/7 font-semibold tracking-tight text-chip-950;
 }
 
+/* Safari focuses the dialog itself when it opens and draws its focus ring around it. */
+dialog {
+    outline: none;
+}
 dialog::backdrop {
     background: rgb(17 40 50 / 0.35);
-    backdrop-filter: blur(2px);
 }
 
 /* While the clock is pinned over the page (no full screen on the iPhone), the margins the browser keeps around it
