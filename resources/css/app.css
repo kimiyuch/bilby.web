@@ -4,6 +4,11 @@
 @source '../views';
 @source '../js/app.js';
 
+/* Keep room for the scrollbar on every page, so the layout doesn't shift between long and short pages. */
+html {
+    scrollbar-gutter: stable;
+}
+
 @theme {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --font-sans--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';

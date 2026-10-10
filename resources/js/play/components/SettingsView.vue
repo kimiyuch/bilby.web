@@ -34,7 +34,7 @@ const voiceName = (v: SpeechSynthesisVoice) => {
 </script>
 
 <template>
-    <div class="mx-auto max-w-3xl px-4 pb-16 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl px-6 pb-16 lg:px-8">
         <p class="eyebrow">Settings</p>
         <h1 class="mt-1 font-display text-3xl font-semibold tracking-tight text-chip-950">Sounds and voice</h1>
 

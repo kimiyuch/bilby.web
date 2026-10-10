@@ -24,7 +24,7 @@
     "src": "_inter-400-600-normal-B7rthDxM.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B7afJ9xC.css",
+    "file": "assets/app-Dlc8mDlf.css",
     "name": "app",
     "names": [
       "app.css"
@@ -33,7 +33,7 @@
     "isEntry": true
   },
   "resources/css/play.css": {
-    "file": "assets/play-DN18642_.css",
+    "file": "assets/play-CmFvk9MO.css",
     "name": "play",
     "names": [
       "play.css"
@@ -48,7 +48,7 @@
     "isEntry": true
   },
   "resources/js/play/main.ts": {
-    "file": "assets/main-B1p2g79C.js",
+    "file": "assets/main-CMYNbXVD.js",
     "name": "main",
     "src": "resources/js/play/main.ts",
     "isEntry": true,

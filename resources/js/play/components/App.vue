@@ -36,14 +36,15 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', onHash));
         <!-- One even, warm background, the pale ochre of the website. -->
         <div class="fixed inset-0 -z-10 bg-ochre-50"></div>
 
-        <header class="mx-auto flex max-w-6xl items-center justify-between gap-x-6 px-4 py-5 sm:px-6 lg:px-8">
+        <!-- Same size and padding as the website header (site-header.blade.php), so nothing moves between them. -->
+        <header class="mx-auto flex max-w-6xl items-center justify-between gap-x-6 px-6 py-5 lg:px-8">
             <a href="/" aria-label="Homepage" class="font-display text-xl font-semibold text-chip-950">Bilby</a>
             <nav class="-mr-2 flex items-center gap-x-1 overflow-x-auto sm:gap-x-4" aria-label="Sections">
                 <button
                     v-for="t in tabs"
                     :key="t.id"
                     type="button"
-                    class="rounded-md px-2 py-1 text-sm/6 font-medium"
+                    class="rounded-md px-2 text-sm/6 font-medium"
                     :class="tab === t.id ? 'text-chip-800' : 'text-neutral-500 hover:text-chip-700'"
                     :aria-current="tab === t.id ? 'page' : undefined"
                     @click="select(t.id)"

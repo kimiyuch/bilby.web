@@ -22,7 +22,7 @@ const quiet = computed(() => soundBlocked.value && !store.settings.muted && stor
 </script>
 
 <template>
-    <div class="mx-auto flex max-w-6xl flex-col gap-y-4 px-4 pb-10 sm:px-6 lg:px-8">
+    <div class="mx-auto flex max-w-6xl flex-col gap-y-4 px-6 pb-10 lg:px-8">
         <div class="rounded-2xl bg-ochre-50 shadow-2xl ring-1 ring-chip-950/10">
             <ClockFaceFrame
                 ref="frame"
