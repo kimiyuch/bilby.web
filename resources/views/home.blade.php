@@ -10,7 +10,7 @@
         ['icon' => 'sparkles', 'title' => 'Builds a structure for you', 'body' => 'Tell Bilby your starting stack, the players, your chips and how long the game should last. It suggests sensible blinds that your chips can actually pay.'],
         ['icon' => 'banknotes', 'title' => 'Keeps the prize pool straight', 'body' => 'Buy-ins, rebuys and add-ons, players left, chips in play and the average stack. Payouts follow the number of entries, and you can change them.'],
         ['icon' => 'tv', 'title' => 'On the big screen', 'body' => 'Put the clock on a TV or projector while you keep the controls on your Mac. Space starts and pauses, the arrow keys skip levels.'],
-        ['icon' => 'device-phone-mobile', 'title' => 'On your iPhone and iPad', 'body' => 'The clock full screen on an iPad at the table, and a countdown on the Lock Screen and in the Dynamic Island, with an alert for every level change.'],
+        ['icon' => 'device-phone-mobile', 'title' => 'On your iPhone and iPad', 'body' => 'The clock full screen on an iPad at the table, and a countdown on the Lock Screen and in the Dynamic Island, with an alert for every level change. Experimental, like the Mac app.'],
         ['icon' => 'globe-alt', 'title' => 'Or right in your browser', 'body' => 'No Mac at hand? Open Bilby in any modern browser, on a laptop, a tablet or the TV. Same clock, same structures, works offline, and nothing leaves your device.'],
         ['icon' => 'moon', 'title' => 'Never loses time', 'body' => 'Bilbies are nocturnal, so a late game suits them. The clock stays right through sleep, quitting and relaunching, and keeps your Mac’s display awake.'],
     ];
@@ -42,7 +42,7 @@
                         <x-heroicon-m-arrow-right class="size-5 shrink-0 fill-current" />
                     </a>
                 </div>
-                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · Apple Silicon · macOS 26 or later · or any modern browser, no install</p>
+                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · the Mac app is experimental (Apple Silicon, macOS 26 or later) · or any modern browser, no install</p>
 
                 <x-clock-face class="mx-auto mt-16 max-w-4xl text-left sm:mt-20" />
             </div>
@@ -121,6 +121,9 @@
                 </h2>
                 <p class="mt-6 max-w-[48ch] text-lg/8 text-pretty text-neutral-600">
                     Bilby isn’t on the App Store and isn’t notarized by Apple, so macOS asks you to confirm it the first time. It takes about a minute, and you only do it once.
+                </p>
+                <p class="mt-4 max-w-[48ch] text-lg/8 text-pretty text-neutral-600">
+                    The Mac, iPad and iPhone apps are experimental: they work, but expect rough edges. If something goes wrong mid-game, the <a href="/play" class="font-semibold text-chip-700 underline decoration-chip-300 underline-offset-4 hover:decoration-chip-600">browser version</a> is a click away.
                 </p>
 
                 <ol role="list" class="mt-16 grid grid-cols-1 gap-x-12 gap-y-12 sm:grid-cols-3">
