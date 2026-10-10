@@ -24,7 +24,7 @@
         {{-- Hero --}}
         <section class="relative pt-10 pb-24 sm:pt-16 sm:pb-32">
             <div class="mx-auto max-w-6xl px-6 text-center lg:px-8">
-                <img src="{{ asset('images/bilby.webp') }}" width="384" height="384" fetchpriority="high" alt="The Bilby app icon: a bilby peeking over a poker chip marked BB" class="mx-auto size-32 sm:size-40">
+                <img src="{{ asset('images/bilby.webp?v=2') }}" width="384" height="384" fetchpriority="high" alt="The Bilby app icon: a bilby peeking over its hole cards, a pair of aces" class="mx-auto size-32 sm:size-40">
                 <h1 class="mx-auto mt-8 max-w-[14ch] font-display text-5xl font-semibold tracking-tight text-balance text-chip-950 sm:text-7xl">
                     Keeps an eye on the big blind
                 </h1>

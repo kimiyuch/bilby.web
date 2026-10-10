@@ -11,14 +11,14 @@
     <meta property="og:title" content="Bilby: a poker tournament clock for Mac, iPad and iPhone">
     <meta property="og:description" content="A calm, native poker tournament clock. Bilby keeps an eye on the big blind, so you can keep yours on the cards.">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:image" content="{{ asset('images/og.png') }}">
+    <meta property="og:image" content="{{ asset('images/og.png?v=2') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="The Bilby app icon, a bilby peeking over a poker chip marked BB, next to the words: Keeps an eye on the big blind.">
+    <meta property="og:image:alt" content="The Bilby app icon, a bilby peeking over a pair of aces, next to the words: Keeps an eye on the big blind.">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png?v=2') }}">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png?v=2') }}">
 
     @fonts
 

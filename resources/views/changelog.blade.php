@@ -1,6 +1,13 @@
 @php
     $releases = [
         [
+            'version' => '0.1.1',
+            'date' => '2026-10-10',
+            'changes' => [
+                'A new app icon: the bilby now peeks over its hole cards, a pair of aces.',
+            ],
+        ],
+        [
             'version' => '0.1',
             'date' => '2026-10-10',
             'title' => 'First release',
