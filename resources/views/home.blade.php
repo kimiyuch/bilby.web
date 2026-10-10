@@ -30,19 +30,19 @@
                     Keeps an eye on the big blind
                 </h1>
                 <p class="mx-auto mt-6 max-w-[50ch] text-lg/8 text-pretty text-neutral-600 sm:text-xl/8">
-                    Bilby is a calm, native poker tournament clock for your Mac, iPad and iPhone. Set up the blinds, press space and shuffle up. Bilby counts down the levels, calls out the blinds and keeps the prize pool straight.
+                    Bilby is a calm poker tournament clock for your browser, Mac, iPad and iPhone. Set up the blinds, press space and shuffle up. Bilby counts down the levels, calls out the blinds and keeps the prize pool straight.
                 </p>
                 <div class="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                    <a href="{{ $download }}" class="inline-flex items-center gap-x-2 rounded-full bg-chip-600 py-3 pr-5 pl-4 text-base/6 font-semibold text-white shadow-sm hover:bg-chip-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600">
-                        <x-heroicon-m-arrow-down-tray class="size-5 shrink-0 fill-white" />
-                        Download for Mac
-                    </a>
-                    <a href="/play" class="inline-flex items-center gap-x-1.5 text-base/6 font-semibold text-chip-800 hover:text-chip-600">
+                    <a href="/play" class="inline-flex items-center gap-x-2 rounded-full bg-chip-600 py-3 pr-5 pl-4 text-base/6 font-semibold text-white shadow-sm hover:bg-chip-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600">
+                        <x-heroicon-m-play class="size-5 shrink-0 fill-white" />
                         Open in your browser
-                        <x-heroicon-m-arrow-right class="size-5 shrink-0 fill-current" />
+                    </a>
+                    <a href="{{ $download }}" class="inline-flex items-center gap-x-1.5 text-base/6 font-semibold text-chip-800 hover:text-chip-600">
+                        Download for Mac
+                        <x-heroicon-m-arrow-down-tray class="size-5 shrink-0 fill-current" />
                     </a>
                 </div>
-                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · the Mac app is experimental (Apple Silicon, macOS 26 or later) · or any modern browser, no install</p>
+                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · any modern browser, no install · or the experimental Mac app (Apple Silicon, macOS 26 or later)</p>
 
                 <x-clock-face class="mx-auto mt-16 max-w-4xl text-left sm:mt-20" />
             </div>
