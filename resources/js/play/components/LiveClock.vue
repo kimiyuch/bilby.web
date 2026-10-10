@@ -28,7 +28,9 @@ onBeforeUnmount(() => window.clearTimeout(hideTimer));
             :snapshot="snapshot"
             :warning-seconds="store.settings.warningSeconds"
             :pool="store.tournament.value.prizePool"
-        />
+        >
+            <template #corner><slot name="corner" /></template>
+        </ClockFace>
         <div
             v-if="overlay"
             class="absolute inset-x-0 bottom-0 flex justify-center p-4 transition-opacity duration-300"

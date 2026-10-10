@@ -32,18 +32,21 @@ const tap = () => {
             @pointerdown="pointerType = $event.pointerType"
             @click="tap"
         >
-            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" @full-screen="toggle" />
-            <button
-                v-if="!isFullScreen"
-                type="button"
-                class="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full text-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-white"
-                title="Full screen (or double-click the clock)"
-                aria-label="Full screen"
-                @click.stop="toggle"
-                @dblclick.stop
-            >
-                <Icon name="arrows-pointing-out" class="size-4" />
-            </button>
+            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" @full-screen="toggle">
+                <template #corner>
+                    <button
+                        v-if="!isFullScreen"
+                        type="button"
+                        class="focus-visible:outline-2 focus-visible:outline-white"
+                        title="Full screen (or double-click the clock)"
+                        aria-label="Full screen"
+                        @click.stop="toggle"
+                        @dblclick.stop
+                    >
+                        <Icon name="arrows-pointing-out" />
+                    </button>
+                </template>
+            </LiveClock>
         </div>
 
         <ClockControls />
@@ -55,7 +58,7 @@ const tap = () => {
             Your browser keeps Bilby quiet until you click somewhere on the page.
         </p>
 
-        <div class="space-y-1 text-center text-sm/6 text-neutral-500">
+        <div class="space-y-4 text-center text-sm/6 text-neutral-500">
             <p>
                 Playing
                 <a href="#structure" class="font-medium text-chip-700 underline decoration-chip-300 underline-offset-4 hover:decoration-chip-600">{{ store.tournament.value.structure.name }}</a>

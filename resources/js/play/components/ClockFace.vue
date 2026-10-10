@@ -68,6 +68,7 @@ const items = computed(() => {
             <div class="header">
                 <div class="title">{{ title }}</div>
                 <span v-if="pill" class="pill">{{ pill }}</span>
+                <div class="corner"><slot name="corner" /></div>
             </div>
 
             <div class="middle">
@@ -121,10 +122,10 @@ const items = computed(() => {
 
 /*
  * Everything is sized from one unit, so the layout keeps its proportions at any size. The face is 100 units
- * wide and its contents add up to about 63 high (74 with a second footer row), so it fits either way.
+ * wide and its contents add up to about 61 high (72 with a second footer row), so it fits either way.
  */
 .inner {
-    --u: min(1cqw, calc(100cqh / 63));
+    --u: min(1cqw, calc(100cqh / 61));
     --u-head: var(--u);
     --u-count: var(--u);
     --u-blinds: var(--u);
@@ -133,12 +134,12 @@ const items = computed(() => {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: calc(var(--u) * 4);
+    padding: calc(var(--u) * 3);
     gap: calc(var(--u) * 1.6);
     font-variant-numeric: tabular-nums;
 }
 .inner.two-rows {
-    --u: min(1cqw, calc(100cqh / 74));
+    --u: min(1cqw, calc(100cqh / 72));
 }
 
 /* Portrait, e.g. a phone held upright: size things from the width and stack the footer in two columns. */
@@ -165,7 +166,7 @@ const items = computed(() => {
     }
 }
 
-/* The level on the left and the paused pill in the middle; the right stays free for the full screen button. */
+/* The level on the left, the paused pill in the middle, and a slot on the right (the full screen button). */
 .header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -180,6 +181,31 @@ const items = computed(() => {
     color: var(--accent);
     transition: color 0.6s ease-in-out;
     white-space: nowrap;
+}
+.corner {
+    grid-column: 3;
+    display: flex;
+    justify-content: flex-end;
+}
+/* As tall as the level title, and flush with the right edge of the content. */
+.corner :slotted(button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--u-head) * 4.4 * 1.2);
+    height: calc(var(--u-head) * 4.4 * 1.2);
+    margin-right: calc(var(--u-head) * -1.6);
+    border-radius: 999px;
+    color: rgb(255 255 255 / 0.4);
+    transition: color 0.2s, background-color 0.2s;
+}
+.corner :slotted(button:hover) {
+    color: white;
+    background: rgb(255 255 255 / 0.1);
+}
+.corner :slotted(svg) {
+    width: 50%;
+    height: 50%;
 }
 .pill {
     grid-column: 2;
