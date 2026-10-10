@@ -24,6 +24,9 @@ jobs:
           cache: npm
 
       - name: JavaScript tests and types
+        # The Laravel Vite plugin refuses to start Vitest in CI otherwise.
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: 1
         run: |
           npm ci
           npm test
