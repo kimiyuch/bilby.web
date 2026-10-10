@@ -36,6 +36,7 @@ onBeforeUnmount(() => window.clearTimeout(hideTimer));
             v-if="overlay"
             class="absolute inset-x-0 bottom-0 flex justify-center p-4 transition-opacity duration-300"
             :class="controlsVisible ? 'opacity-100' : 'pointer-events-none opacity-0'"
+            @click.stop
             @dblclick.stop
         >
             <div class="flex items-center gap-x-1 rounded-full bg-black/60 p-1.5 text-white shadow-lg ring-1 ring-white/10 backdrop-blur">

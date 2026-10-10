@@ -2,7 +2,7 @@
 // change is written to localStorage straight away, so a running tournament carries on after a reload, and other
 // tabs of Bilby follow along through storage events.
 
-import { reactive, ref, shallowRef, watch } from 'vue';
+import { reactive, ref, shallowRef, toRaw, watch } from 'vue';
 import type { ClockEvent, ClockSnapshot } from './kit/clock';
 import { type PrizePool, resetCounters } from './kit/prizePool';
 import { type Structure, decodeStructure } from './kit/structure';
@@ -92,17 +92,20 @@ export const updatePrizePool = (body: (p: PrizePool) => PrizePool) =>
 
 // MARK: Structures
 
+/** Structures from the library are reactive proxies, which structuredClone can't copy. */
+const copy = (s: Structure): Structure => structuredClone(toRaw(s));
+
 /** Edits the structure in play; the clock stays on its round. */
-export const setStructure = (s: Structure) => change((t, at) => t.setStructure(structuredClone(s), at));
+export const setStructure = (s: Structure) => change((t, at) => t.setStructure(copy(s), at));
 
 /** Plays a different structure from its first level. */
-export const use = (s: Structure) => change((t) => t.replaceStructure(structuredClone(s)));
+export const use = (s: Structure) => change((t) => t.replaceStructure(copy(s)));
 
 export function saveToLibrary(s: Structure): void {
-    const copy = structuredClone(s);
-    const i = library.value.findIndex((x) => x.id === copy.id);
-    if (i >= 0) library.value[i] = copy;
-    else library.value.push(copy);
+    const saved = copy(s);
+    const i = library.value.findIndex((x) => x.id === saved.id);
+    if (i >= 0) library.value[i] = saved;
+    else library.value.push(saved);
     save(keys.structures, library.value);
 }
 
