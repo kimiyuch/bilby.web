@@ -175,7 +175,9 @@ const items = computed(() => {
 }
 .title {
     font-size: calc(var(--u-head) * 4.4);
-    line-height: 1.2;
+    /* Only as tall as the capitals, so the space above them matches the padding at the side. */
+    line-height: 1;
+    text-box: trim-both cap alphabetic;
     font-weight: 600;
     letter-spacing: 0.07em;
     color: var(--accent);
@@ -194,7 +196,9 @@ const items = computed(() => {
     justify-content: center;
     width: calc(var(--u-head) * 4.4 * 1.2);
     height: calc(var(--u-head) * 4.4 * 1.2);
-    margin-right: calc(var(--u-head) * -1.6);
+    margin-right: calc(var(--u-head) * -1.056);
+    /* Centered on the title without making the row taller. */
+    margin-block: calc(var(--u-head) * -2);
     border-radius: 999px;
     color: rgb(255 255 255 / 0.4);
     transition: color 0.2s, background-color 0.2s;
@@ -203,12 +207,15 @@ const items = computed(() => {
     color: white;
     background: rgb(255 255 255 / 0.1);
 }
+/* The arrows fill 80 % of the icon, so at 75 % of the button they're as tall as the capitals of the title. */
 .corner :slotted(svg) {
-    width: 50%;
-    height: 50%;
+    width: 75%;
+    height: 75%;
 }
 .pill {
     grid-column: 2;
+    line-height: 1.2;
+    margin-block: calc(var(--u-head) * -1);
     font-size: calc(var(--u-head) * 2);
     font-weight: 700;
     letter-spacing: 0.1em;
