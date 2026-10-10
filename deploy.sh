@@ -22,6 +22,7 @@ fi
 
 echo "Running tests…"
 php artisan test
+npm test --silent
 
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT

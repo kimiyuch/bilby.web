@@ -1,8 +1,8 @@
 @import 'tailwindcss' source(none);
 
-/* Only scan the templates; nothing else in the project contains classes. */
+/* Only scan the website's templates and script; the browser app (play.css) adds its own. */
 @source '../views';
-@source '../js';
+@source '../js/app.js';
 
 @theme {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

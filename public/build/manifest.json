@@ -24,7 +24,7 @@
     "src": "_inter-400-600-normal-B7rthDxM.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Ghvux7_V.css",
+    "file": "assets/app-DFU00SjQ.css",
     "name": "app",
     "names": [
       "app.css"
@@ -32,10 +32,31 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/play.css": {
+    "file": "assets/play-DH_tOMJe.css",
+    "name": "play",
+    "names": [
+      "play.css"
+    ],
+    "src": "resources/css/play.css",
+    "isEntry": true
+  },
   "resources/js/app.js": {
     "file": "assets/app-CeSaasae.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
+  },
+  "resources/js/play/main.ts": {
+    "file": "assets/main-BWo-PTs6.js",
+    "name": "main",
+    "src": "resources/js/play/main.ts",
+    "isEntry": true,
+    "css": [
+      "assets/main-DEMfT5uk.css"
+    ],
+    "assets": [
+      "assets/ticker-wQbDgyxs.js"
+    ]
   }
 }

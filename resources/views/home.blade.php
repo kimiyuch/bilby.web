@@ -11,6 +11,7 @@
         ['icon' => 'banknotes', 'title' => 'Keeps the prize pool straight', 'body' => 'Buy-ins, rebuys and add-ons, players left, chips in play and the average stack. Payouts follow the number of entries, and you can change them.'],
         ['icon' => 'tv', 'title' => 'On the big screen', 'body' => 'Put the clock on a TV or projector while you keep the controls on your Mac. Space starts and pauses, the arrow keys skip levels.'],
         ['icon' => 'device-phone-mobile', 'title' => 'On your iPhone and iPad', 'body' => 'The clock full screen on an iPad at the table, and a countdown on the Lock Screen and in the Dynamic Island, with an alert for every level change.'],
+        ['icon' => 'globe-alt', 'title' => 'Or right in your browser', 'body' => 'No Mac at hand? Open Bilby in any modern browser, on a laptop, a tablet or the TV. Same clock, same structures, works offline, and nothing leaves your device.'],
         ['icon' => 'moon', 'title' => 'Never loses time', 'body' => 'Bilbies are nocturnal, so a late game suits them. The clock stays right through sleep, quitting and relaunching, and keeps your Mac’s display awake.'],
     ];
 @endphp
@@ -36,12 +37,12 @@
                         <x-heroicon-m-arrow-down-tray class="size-5 shrink-0 fill-white" />
                         Download for Mac
                     </a>
-                    <a href="{{ $repository }}" class="inline-flex items-center gap-x-1.5 text-base/6 font-semibold text-chip-800 hover:text-chip-600">
-                        View on GitHub
+                    <a href="/play" class="inline-flex items-center gap-x-1.5 text-base/6 font-semibold text-chip-800 hover:text-chip-600">
+                        Open in your browser
                         <x-heroicon-m-arrow-right class="size-5 shrink-0 fill-current" />
                     </a>
                 </div>
-                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · Apple Silicon · macOS 26 or later</p>
+                <p class="mt-6 text-base/7 text-neutral-500 sm:text-sm/6">Free · Apple Silicon · macOS 26 or later · or any modern browser, no install</p>
 
                 <x-clock-face class="mx-auto mt-16 max-w-4xl text-left sm:mt-20" />
             </div>
@@ -95,7 +96,7 @@
                     </div>
                     <div class="flex items-baseline justify-between gap-x-6 py-6">
                         <dt class="text-base/7 text-neutral-600">Runs on</dt>
-                        <dd class="font-display text-2xl font-semibold tracking-tight text-chip-950">Mac, iPad, iPhone</dd>
+                        <dd class="font-display text-2xl font-semibold tracking-tight text-chip-950">Mac, iPad, iPhone, web</dd>
                     </div>
                     <div class="flex items-baseline justify-between gap-x-6 py-6">
                         <dt class="text-base/7 text-neutral-600">License</dt>

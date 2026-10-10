@@ -2,11 +2,12 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny, local } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/play.css', 'resources/js/play/main.ts'],
             refresh: true,
             fonts: [
                 // InterVariable from rsms.me, cut down to latin and weights 400–600 with
@@ -22,10 +23,19 @@ export default defineConfig({
             ],
         }),
         tailwindcss(),
+        // The browser version of the app (resources/js/play).
+        vue({
+            template: {
+                transformAssetUrls: { base: null, includeAbsolute: false },
+            },
+        }),
     ],
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
+    },
+    test: {
+        include: ['tests/js/**/*.test.ts'],
     },
 });
