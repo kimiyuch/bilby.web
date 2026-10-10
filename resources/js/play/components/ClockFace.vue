@@ -8,12 +8,9 @@ import { type PrizePool, averageStack, total } from '../kit/prizePool';
 
 const props = defineProps<{
     snapshot: ClockSnapshot;
-    structureName: string;
     warningSeconds: number;
     /** Shown in a second footer row once players have entered. */
     pool?: PrizePool | null;
-    /** Keeps the top right corner free, for a button over the face. */
-    corner?: boolean;
 }>();
 
 /** Always dark: calm during play, warm amber when a level is about to end, teal on a break. */
@@ -67,11 +64,10 @@ const items = computed(() => {
 
 <template>
     <div class="face" :data-theme="theme">
-        <div class="inner" :class="{ 'two-rows': items.length > 3, corner }">
+        <div class="inner" :class="{ 'two-rows': items.length > 3 }">
             <div class="header">
                 <div class="title">{{ title }}</div>
                 <span v-if="pill" class="pill">{{ pill }}</span>
-                <span class="name">{{ structureName }}</span>
             </div>
 
             <div class="middle">
@@ -164,15 +160,12 @@ const items = computed(() => {
     .footer > div:nth-child(2n) {
         text-align: right;
     }
-    .corner .header {
-        padding-right: 2rem;
-    }
     .footer dd {
         font-size: calc(var(--u-foot) * 3.4 * var(--fit, 1));
     }
 }
 
-/* The level on the left, the paused pill in the middle, the structure on the right. */
+/* The level on the left and the paused pill in the middle; the right stays free for the full screen button. */
 .header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -198,16 +191,6 @@ const items = computed(() => {
     border-radius: 999px;
     padding: calc(var(--u-head) * 0.5) calc(var(--u-head) * 1.4);
     transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out;
-}
-.name {
-    grid-column: 3;
-    text-align: right;
-    font-size: calc(var(--u-head) * 2.4);
-    font-weight: 500;
-    color: var(--secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .middle {

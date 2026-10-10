@@ -32,7 +32,7 @@ const tap = () => {
             @pointerdown="pointerType = $event.pointerType"
             @click="tap"
         >
-            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" :corner="!isFullScreen" @full-screen="toggle" />
+            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" @full-screen="toggle" />
             <button
                 v-if="!isFullScreen"
                 type="button"
@@ -55,8 +55,14 @@ const tap = () => {
             Your browser keeps Bilby quiet until you click somewhere on the page.
         </p>
 
-        <p class="text-center text-sm/6 text-neutral-500 max-sm:hidden">
-            Space starts and pauses · ← → change the level · ↑ ↓ add or take a minute · M mutes · double-click the clock for full screen
-        </p>
+        <div class="space-y-1 text-center text-sm/6 text-neutral-500">
+            <p>
+                Playing
+                <a href="#structure" class="font-medium text-chip-700 underline decoration-chip-300 underline-offset-4 hover:decoration-chip-600">{{ store.tournament.value.structure.name }}</a>
+            </p>
+            <p class="max-sm:hidden">
+                Space starts and pauses · ← → change the level · ↑ ↓ add or take a minute · M mutes · double-click the clock for full screen
+            </p>
+        </div>
     </div>
 </template>
