@@ -54,9 +54,15 @@ const reset = async () => {
             <Icon name="backward" />
         </button>
 
-        <button type="button" class="btn btn-primary min-w-40 px-6 py-3 text-base/6" title="Start or pause (space)" @click="store.toggle">
-            <Icon :name="store.isRunning.value ? 'pause' : 'play'" />
-            {{ store.isRunning.value ? 'Pause' : 'Start' }}
+        <button
+            type="button"
+            class="btn btn-primary size-16 p-0 [&>svg]:size-7"
+            :aria-label="store.isRunning.value ? 'Pause' : 'Start'"
+            title="Start or pause (space)"
+            @click="store.toggle"
+        >
+            <!-- The play triangle looks centered when it sits a little to the right. -->
+            <Icon :name="store.isRunning.value ? 'pause' : 'play'" :class="{ 'translate-x-0.5': !store.isRunning.value }" />
         </button>
 
         <button type="button" class="btn btn-icon size-11" title="Next level (→)" aria-label="Next level" @click="store.next">
