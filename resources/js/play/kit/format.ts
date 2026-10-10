@@ -101,8 +101,7 @@ export const shortText = (r: Round): string => (r.ante > 0 ? `${blindsText(r)} �
 
 const moneyFormats = new Map<string, Intl.NumberFormat>();
 
-/** "CHF 260" or "CHF 12.50". */
-export function money(amount: number, currency: string): string {
+function moneyFormat(currency: string): Intl.NumberFormat {
     let format = moneyFormats.get(currency);
     if (!format) {
         try {
@@ -112,11 +111,35 @@ export function money(amount: number, currency: string): string {
         }
         moneyFormats.set(currency, format);
     }
-    // Whole amounts without decimals, others with two: 12.5 reads 12.50.
-    if (!Number.isInteger(amount)) {
-        return format.formatToParts(amount).map((p) => (p.type === 'fraction' && p.value.length === 1 ? p.value + '0' : p.value)).join('');
-    }
-    return format.format(amount);
+    return format;
+}
+
+/** The locale's parts; whole amounts without decimals, others with two: 12.5 reads 12.50. */
+function moneyFormatParts(amount: number, currency: string): Intl.NumberFormatPart[] {
+    return moneyFormat(currency)
+        .formatToParts(amount)
+        .map((p) => (p.type === 'fraction' && p.value.length === 1 ? { ...p, value: p.value + '0' } : p));
+}
+
+/** "CHF 260" or "CHF 12.50", in the locale's order. */
+export function money(amount: number, currency: string): string {
+    return moneyFormatParts(amount, currency).map((p) => p.value).join('');
+}
+
+export interface MoneyParts {
+    /** "CHF", "$", "€". Empty if the currency code is unknown. */
+    currency: string;
+    /** "1’250", "12.50", "-5". */
+    number: string;
+}
+
+/** The currency and the number apart, so a display can put the currency first and set it smaller. */
+export function moneyParts(amount: number, currency: string): MoneyParts {
+    const parts = moneyFormatParts(amount, currency);
+    return {
+        currency: parts.find((p) => p.type === 'currency')?.value ?? '',
+        number: parts.filter((p) => p.type !== 'currency').map((p) => p.value).join('').trim(),
+    };
 }
 
 /** "1st", "2nd", "3rd", in English like the rest of the app. */

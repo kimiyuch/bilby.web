@@ -5,6 +5,7 @@ import { computed } from 'vue';
 import type { ClockSnapshot } from '../kit/clock';
 import { TimeFormat, anteText, blindsText, compactChips, compactText, money } from '../kit/format';
 import { type PrizePool, averageStack, chipsInPlay, payouts, total } from '../kit/prizePool';
+import Money from './Money.vue';
 
 const props = defineProps<{
     snapshot: ClockSnapshot;
@@ -55,7 +56,8 @@ const timeOfDay = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 
 /** What takes turns in the middle of the footer: where we are, the players and the money, and what time things happen. */
 const stats = computed(() => {
     const s = props.snapshot;
-    const list: [string, string][] = [];
+    /** [label, text], or [label, text, amount] for money, which shows its currency first and smaller. */
+    const list: [string, string, number?][] = [];
     if (s.levelNumber !== null) list.push(['LEVELS', `${s.levelNumber} / ${s.levelCount}`]);
     const p = props.pool;
     if (p && p.entries > 0) {
@@ -66,8 +68,8 @@ const stats = computed(() => {
             if (!s.isBreak && s.round.bigBlind > 0) list.push(['AVERAGE IN BB', `${Math.round(average / s.round.bigBlind)} BB`]);
         }
         if (total(p) > 0) {
-            list.push(['PRIZE POOL', money(total(p), p.currency)]);
-            list.push(['FIRST PLACE', money(payouts(p)[0] ?? 0, p.currency)]);
+            list.push(['PRIZE POOL', money(total(p), p.currency), total(p)]);
+            list.push(['FIRST PLACE', money(payouts(p)[0] ?? 0, p.currency), payouts(p)[0] ?? 0]);
         }
         list.push(['CHIPS IN PLAY', compactChips(chipsInPlay(p))]);
     }
@@ -79,7 +81,7 @@ const stats = computed(() => {
 });
 
 /** Each stat stays for a few seconds. Counted from the clock, so every window shows the same one. */
-const statSeconds = 6;
+const statSeconds = 12;
 const stat = computed(() => {
     const list = stats.value;
     if (list.length === 0) return null;
@@ -120,7 +122,10 @@ const stat = computed(() => {
                 <Transition name="stat" mode="out-in">
                     <div v-if="stat" :key="stat[0]" class="stat">
                         <dt>{{ stat[0] }}</dt>
-                        <dd :style="{ '--fit': fit(stat[1]) }">{{ stat[1] }}</dd>
+                        <dd :style="{ '--fit': fit(stat[1]) }">
+                            <Money v-if="stat[2] !== undefined" :amount="stat[2]" :currency="pool!.currency" />
+                            <template v-else>{{ stat[1] }}</template>
+                        </dd>
                     </div>
                     <div v-else class="stat"></div>
                 </Transition>

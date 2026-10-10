@@ -6,6 +6,7 @@ import * as pp from '../kit/prizePool';
 import { confirm } from '../confirm';
 import * as store from '../store';
 import Icon from './Icon.vue';
+import Money from './Money.vue';
 
 const pool = computed(() => store.tournament.value.prizePool);
 const update = store.updatePrizePool;
@@ -158,7 +159,7 @@ const newTournament = async () => {
                 <section>
                     <div class="flex items-baseline justify-between pb-2">
                         <h2 class="section-title">Prize pool</h2>
-                        <span class="font-display text-3xl font-semibold tracking-tight text-chip-950 tabular-nums">{{ money(pp.total(pool), pool.currency) }}</span>
+                        <span class="font-display text-3xl font-semibold tracking-tight text-chip-950 tabular-nums"><Money :amount="pp.total(pool)" :currency="pool.currency" /></span>
                     </div>
                     <dl class="divide-y divide-neutral-950/5 border-t border-neutral-950/10 text-sm/6 tabular-nums">
                         <div class="row">
