@@ -1,6 +1,6 @@
 {{--
     Bilby in the browser. The whole app is in resources/js/play and runs on the device: no server state, and
-    everything is kept in the browser's local storage. /play?screen opens the clock on its own, for a TV.
+    everything is kept in the browser's local storage.
 --}}
 <!DOCTYPE html>
 <html lang="en" class="bg-white antialiased">
@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Bilby</title>
-    <meta name="description" content="Bilby, the calm poker tournament clock, in your browser. Blind structures, spoken announcements, a big screen for the TV and the prize pool kept straight. Free, no account.">
+    <meta name="description" content="Bilby, the calm poker tournament clock, in your browser. Blind structures, spoken announcements, full screen for the TV and the prize pool kept straight. Free, no account.">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Bilby">

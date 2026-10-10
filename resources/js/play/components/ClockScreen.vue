@@ -8,7 +8,6 @@ import ClockControls from './ClockControls.vue';
 import Icon from './Icon.vue';
 import LiveClock from './LiveClock.vue';
 
-const emit = defineEmits<{ bigScreen: [] }>();
 const face = ref<HTMLElement>();
 const { isFullScreen, pinned, toggle } = useFullScreen(face);
 
@@ -33,7 +32,18 @@ const tap = () => {
             @pointerdown="pointerType = $event.pointerType"
             @click="tap"
         >
-            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" @full-screen="toggle" />
+            <LiveClock :overlay="isFullScreen" :is-full-screen="isFullScreen" :corner="!isFullScreen" @full-screen="toggle" />
+            <button
+                v-if="!isFullScreen"
+                type="button"
+                class="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full text-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-white"
+                title="Full screen (or double-click the clock)"
+                aria-label="Full screen"
+                @click.stop="toggle"
+                @dblclick.stop
+            >
+                <Icon name="arrows-pointing-out" class="size-4" />
+            </button>
         </div>
 
         <ClockControls />
@@ -45,16 +55,8 @@ const tap = () => {
             Your browser keeps Bilby quiet until you click somewhere on the page.
         </p>
 
-        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm/6 text-neutral-500">
-            <button type="button" class="inline-flex items-center gap-x-1.5 font-medium text-chip-700 hover:text-chip-600" title="Or double-click the clock" @click="toggle">
-                <Icon name="arrows-pointing-out" class="size-4" />
-                Full screen
-            </button>
-            <button type="button" class="inline-flex items-center gap-x-1.5 font-medium text-chip-700 hover:text-chip-600" @click="emit('bigScreen')">
-                <Icon name="tv" class="size-4" />
-                Big screen in a new window
-            </button>
-            <span class="max-sm:hidden">Space starts and pauses · ← → change the level · ↑ ↓ add or take a minute · M mutes</span>
-        </div>
+        <p class="text-center text-sm/6 text-neutral-500 max-sm:hidden">
+            Space starts and pauses · ← → change the level · ↑ ↓ add or take a minute · M mutes · double-click the clock for full screen
+        </p>
     </div>
 </template>

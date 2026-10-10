@@ -12,6 +12,8 @@ const props = defineProps<{
     warningSeconds: number;
     /** Shown in a second footer row once players have entered. */
     pool?: PrizePool | null;
+    /** Keeps the top right corner free, for a button over the face. */
+    corner?: boolean;
 }>();
 
 /** Always dark: calm during play, warm amber when a level is about to end, teal on a break. */
@@ -65,13 +67,11 @@ const items = computed(() => {
 
 <template>
     <div class="face" :data-theme="theme">
-        <div class="inner" :class="{ 'two-rows': items.length > 3 }">
+        <div class="inner" :class="{ 'two-rows': items.length > 3, corner }">
             <div class="header">
                 <div class="title">{{ title }}</div>
-                <div class="header-end">
-                    <span v-if="pill" class="pill">{{ pill }}</span>
-                    <span class="name">{{ structureName }}</span>
-                </div>
+                <span v-if="pill" class="pill">{{ pill }}</span>
+                <span class="name">{{ structureName }}</span>
             </div>
 
             <div class="middle">
@@ -125,10 +125,10 @@ const items = computed(() => {
 
 /*
  * Everything is sized from one unit, so the layout keeps its proportions at any size. The face is 100 units
- * wide and its contents add up to about 62 high (73 with a second footer row), so it fits either way.
+ * wide and its contents add up to about 63 high (74 with a second footer row), so it fits either way.
  */
 .inner {
-    --u: min(1cqw, calc(100cqh / 62));
+    --u: min(1cqw, calc(100cqh / 63));
     --u-head: var(--u);
     --u-count: var(--u);
     --u-blinds: var(--u);
@@ -137,12 +137,12 @@ const items = computed(() => {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: calc(var(--u) * 3.5) calc(var(--u) * 5);
+    padding: calc(var(--u) * 4);
     gap: calc(var(--u) * 1.6);
     font-variant-numeric: tabular-nums;
 }
 .inner.two-rows {
-    --u: min(1cqw, calc(100cqh / 73));
+    --u: min(1cqw, calc(100cqh / 74));
 }
 
 /* Portrait, e.g. a phone held upright: size things from the width and stack the footer in two columns. */
@@ -158,15 +158,25 @@ const items = computed(() => {
     .footer {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
+    .footer > div:nth-child(n) {
+        text-align: left;
+    }
+    .footer > div:nth-child(2n) {
+        text-align: right;
+    }
+    .corner .header {
+        padding-right: 2rem;
+    }
     .footer dd {
         font-size: calc(var(--u-foot) * 3.4 * var(--fit, 1));
     }
 }
 
+/* The level on the left, the paused pill in the middle, the structure on the right. */
 .header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
     gap: calc(var(--u-head) * 2);
 }
 .title {
@@ -178,13 +188,8 @@ const items = computed(() => {
     transition: color 0.6s ease-in-out;
     white-space: nowrap;
 }
-.header-end {
-    display: flex;
-    align-items: baseline;
-    min-width: 0;
-    gap: calc(var(--u-head) * 1);
-}
 .pill {
+    grid-column: 2;
     font-size: calc(var(--u-head) * 2);
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -195,6 +200,8 @@ const items = computed(() => {
     transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out;
 }
 .name {
+    grid-column: 3;
+    text-align: right;
     font-size: calc(var(--u-head) * 2.4);
     font-weight: 500;
     color: var(--secondary);
@@ -273,6 +280,12 @@ const items = computed(() => {
     column-gap: calc(var(--u-foot) * 3);
     row-gap: calc(var(--u-foot) * 2.2);
     margin: 0;
+}
+.footer > div:nth-child(3n + 2) {
+    text-align: center;
+}
+.footer > div:nth-child(3n) {
+    text-align: right;
 }
 .footer dt {
     font-size: calc(var(--u-foot) * 1.9);

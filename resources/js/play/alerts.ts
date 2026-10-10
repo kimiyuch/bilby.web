@@ -1,5 +1,5 @@
 // Alerts.swift: turns clock events into sounds and announcements, following the settings. Only one window
-// plays them, so a big screen window or a second tab doesn't double every chime.
+// plays them, so a second tab doesn’t double every chime.
 
 import { ref } from 'vue';
 import type { ClockEvent } from './kit/clock';

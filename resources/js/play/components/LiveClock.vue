@@ -6,7 +6,11 @@ import * as store from '../store';
 import ClockFace from './ClockFace.vue';
 import Icon from './Icon.vue';
 
-const props = withDefaults(defineProps<{ overlay?: boolean; isFullScreen?: boolean }>(), { overlay: false, isFullScreen: false });
+const props = withDefaults(defineProps<{ overlay?: boolean; isFullScreen?: boolean; corner?: boolean }>(), {
+    overlay: false,
+    isFullScreen: false,
+    corner: false,
+});
 const emit = defineEmits<{ fullScreen: [] }>();
 
 const snapshot = computed(() => store.snapshot(store.now.value));
@@ -29,6 +33,7 @@ onBeforeUnmount(() => window.clearTimeout(hideTimer));
             :structure-name="store.tournament.value.structure.name"
             :warning-seconds="store.settings.warningSeconds"
             :pool="store.tournament.value.prizePool"
+            :corner="corner"
         />
         <div
             v-if="overlay"

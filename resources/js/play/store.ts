@@ -1,6 +1,6 @@
 // TournamentStore.swift for the browser: the tournament in play, the saved structures and the settings. Every
 // change is written to localStorage straight away, so a running tournament carries on after a reload, and other
-// windows (the big screen) follow along through storage events.
+// tabs of Bilby follow along through storage events.
 
 import { reactive, ref, shallowRef, watch } from 'vue';
 import type { ClockEvent, ClockSnapshot } from './kit/clock';
