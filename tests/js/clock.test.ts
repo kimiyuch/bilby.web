@@ -20,6 +20,7 @@ describe('Clock', () => {
         const s = Clock.start(structure).snapshot(structure, t0);
         expect(s.roundIndex).toBe(0);
         expect(s.levelNumber).toBe(1);
+        expect(s.levelCount).toBe(3);
         expect(s.remaining).toBe(600);
         expect(s.isRunning || s.hasStarted).toBe(false);
         expect(s.nextLevel?.bigBlind).toBe(100);

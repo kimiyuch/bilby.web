@@ -52,10 +52,11 @@ const nextBreak = computed(() => {
 
 const timeOfDay = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' });
 
-/** What takes turns in the middle of the footer: the players and the money, and when the level ends. */
+/** What takes turns in the middle of the footer: where we are, the players and the money, and what time things happen. */
 const stats = computed(() => {
     const s = props.snapshot;
     const list: [string, string][] = [];
+    if (s.levelNumber !== null) list.push(['LEVELS', `${s.levelNumber} / ${s.levelCount}`]);
     const p = props.pool;
     if (p && p.entries > 0) {
         const average = averageStack(p);
@@ -72,6 +73,7 @@ const stats = computed(() => {
     }
     if (s.isRunning && s.endsAt !== null) {
         list.push([s.isBreak ? 'BREAK ENDS AT' : 'LEVEL ENDS AT', timeOfDay.format(new Date(s.endsAt * 1000))]);
+        if (s.untilNextBreak !== null) list.push(['BREAK AT', timeOfDay.format(new Date((props.now + s.untilNextBreak) * 1000))]);
     }
     return list;
 });

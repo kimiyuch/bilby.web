@@ -1,7 +1,7 @@
 // A port of BilbyKit's Clock.swift. All times are in seconds: durations as such, moments as seconds since 1970
 // (Date.now() / 1000).
 
-import { type Round, type Structure, duration, isBreak, levelNumber, pause } from './structure';
+import { type Round, type Structure, duration, isBreak, levelCount, levelNumber, pause } from './structure';
 
 export type ClockMode = { paused: number } | { endsAt: number };
 
@@ -267,6 +267,8 @@ export interface ClockSnapshot {
     round: Round;
     /** Null during a break. */
     levelNumber: number | null;
+    /** How many levels the structure has, breaks not counted. */
+    levelCount: number;
     remaining: number;
     endsAt: number | null;
     /** How much of the round has passed, 0 to 1. */
@@ -298,6 +300,7 @@ function makeSnapshot(clock: Clock, s: Structure, now: number): ClockSnapshot {
         roundIndex: index,
         round,
         levelNumber: levelNumber(s, index),
+        levelCount: levelCount(s),
         remaining,
         endsAt: 'endsAt' in state.mode ? state.mode.endsAt : null,
         progress: duration(round) > 0 ? Math.min(1, Math.max(0, 1 - remaining / duration(round))) : 1,
