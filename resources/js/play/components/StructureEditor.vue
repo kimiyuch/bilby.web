@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Edits the structure in play (StructureEditor.swift). Changes apply immediately; the clock stays on its round.
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
 import { TimeFormat } from '../kit/format';
 import {
     type AnteStyle, type Round, type Structure, StructureFileError, exportStructure, importStructure, isBreak, levelCount,
@@ -10,6 +10,7 @@ import * as store from '../store';
 import GeneratorDialog from './GeneratorDialog.vue';
 import Icon from './Icon.vue';
 import LibraryDialog from './LibraryDialog.vue';
+import Menu from './Menu.vue';
 
 const structure = computed(() => store.tournament.value.structure);
 const current = computed(() => (store.tournament.value.clock.hasStarted ? store.snapshot(store.now.value).roundIndex : -1));
@@ -85,18 +86,11 @@ const move = (from: number, to: number) =>
 
 // MARK: Row menu
 
-const menuFor = ref<string | null>(null);
-const closeMenu = (event: Event) => {
-    if (!(event.target as HTMLElement).closest('[data-row-menu]')) menuFor.value = null;
-};
-onMounted(() => document.addEventListener('pointerdown', closeMenu));
-onBeforeUnmount(() => {
-    document.removeEventListener('pointerdown', closeMenu);
-    window.clearTimeout(messageTimer);
-});
+onBeforeUnmount(() => window.clearTimeout(messageTimer));
 const playFrom = (index: number) => store.jump(index);
-const menu = (action: () => void) => {
-    menuFor.value = null;
+/** Runs a menu item, then closes the menu. */
+const run = (action: () => unknown, close: () => void) => {
+    close();
     action();
 };
 
@@ -179,12 +173,17 @@ const saveToLibrary = () => {
                 >
                 <p class="mt-1 text-sm/6 text-neutral-500">{{ summary }} · Changes apply straight away; the clock stays on its level.</p>
             </div>
-            <div class="flex flex-wrap gap-2">
-                <button type="button" class="btn" @click="showLibrary = true"><Icon name="book-open" /> Structures</button>
-                <button type="button" class="btn" @click="showGenerator = true"><Icon name="sparkles" /> Generate</button>
-                <button type="button" class="btn" title="Keep a copy under My Structures" @click="saveToLibrary">Save</button>
-                <button type="button" class="btn" title="Import a structure file (JSON)" @click="fileInput?.click()"><Icon name="arrow-down-tray" /> Import</button>
-                <button type="button" class="btn" title="Export as a JSON file, which the Mac and iPhone apps can import too" @click="exportFile"><Icon name="arrow-up-tray" /> Export</button>
+            <div class="flex items-center gap-2">
+                <button type="button" class="btn py-2 pr-3 pl-2" @click="showLibrary = true"><Icon name="book-open" /> Structures</button>
+                <button type="button" class="btn py-2 pr-3 pl-2" @click="showGenerator = true"><Icon name="sparkles" /> Generate</button>
+                <Menu label="More">
+                    <template #default="{ close }">
+                        <button type="button" role="menuitem" class="menu-item" @click="run(saveToLibrary, close)">Save to My Structures</button>
+                        <hr class="menu-separator">
+                        <button type="button" role="menuitem" class="menu-item" @click="run(() => fileInput?.click(), close)">Import a file…</button>
+                        <button type="button" role="menuitem" class="menu-item" @click="run(exportFile, close)">Export as a file</button>
+                    </template>
+                </Menu>
                 <input ref="fileInput" type="file" accept=".json,application/json" class="hidden" @change="importFile">
             </div>
         </div>
@@ -198,9 +197,9 @@ const saveToLibrary = () => {
             {{ message.text }}
         </p>
 
-        <div class="card mt-6">
+        <div class="mt-8 border-y border-neutral-950/10">
             <!-- Column titles, on wide screens -->
-            <div class="hidden grid-cols-[1.5rem_6.5rem_repeat(3,minmax(0,1fr))_8.5rem_5.5rem_2.25rem] items-center gap-x-3 border-b border-neutral-950/5 px-4 py-2.5 text-xs/5 font-medium text-neutral-500 md:grid">
+            <div class="hidden grid-cols-[1.5rem_6.5rem_repeat(3,minmax(0,1fr))_8.5rem_5.5rem_2.25rem] items-center gap-x-3 border-b border-neutral-950/5 py-2.5 text-xs/5 font-medium text-neutral-500 md:grid">
                 <span></span>
                 <span></span>
                 <span class="text-right">Small blind</span>
@@ -215,9 +214,9 @@ const saveToLibrary = () => {
                 <li
                     v-for="(round, index) in structure.rounds"
                     :key="round.id"
-                    class="relative grid grid-cols-[1.5rem_minmax(0,1fr)_5.5rem_2.25rem] items-center gap-x-3 gap-y-2 px-4 py-2.5 md:grid-cols-[1.5rem_6.5rem_repeat(3,minmax(0,1fr))_8.5rem_5.5rem_2.25rem]"
+                    class="relative grid grid-cols-[1.5rem_minmax(0,1fr)_5.5rem_2.25rem] items-center gap-x-3 gap-y-2 py-2.5 md:grid-cols-[1.5rem_6.5rem_repeat(3,minmax(0,1fr))_8.5rem_5.5rem_2.25rem]"
                     :class="{
-                        'bg-ochre-50/60': index === current,
+                        '-mx-3 bg-ochre-50 px-3 sm:rounded-lg': index === current,
                         'opacity-40': dragging === index,
                         'shadow-[inset_0_2px_0_var(--color-chip-500)]': dropTarget === index && dragging !== null && dragging > index,
                         'shadow-[inset_0_-2px_0_var(--color-chip-500)]': dropTarget === index && dragging !== null && dragging < index,
@@ -283,43 +282,36 @@ const saveToLibrary = () => {
                         <span class="text-xs/5 text-neutral-500 md:hidden">min</span>
                     </label>
 
-                    <div class="relative max-md:row-start-1 max-md:col-start-4" data-row-menu>
-                        <button type="button" class="btn btn-plain btn-icon" aria-label="More" :aria-expanded="menuFor === round.id" @click="menuFor = menuFor === round.id ? null : round.id">
-                            <Icon name="ellipsis-horizontal" />
-                        </button>
-                        <div
-                            v-if="menuFor === round.id"
-                            role="menu"
-                            class="absolute top-full right-0 z-20 mt-1 w-52 rounded-xl bg-white p-1 text-sm/6 shadow-lg ring-1 ring-chip-950/10"
-                        >
-                            <button type="button" role="menuitem" class="menu-item" @click="menu(() => playFrom(index))">Play from here</button>
-                            <hr class="my-1 border-neutral-950/5">
-                            <button type="button" role="menuitem" class="menu-item" @click="menu(() => insert('level', index))">Insert level above</button>
-                            <button type="button" role="menuitem" class="menu-item" @click="menu(() => insert('break', index))">Insert break above</button>
-                            <button type="button" role="menuitem" class="menu-item" :disabled="index === 0" @click="menu(() => move(index, index - 1))">Move up</button>
-                            <button type="button" role="menuitem" class="menu-item" :disabled="index === structure.rounds.length - 1" @click="menu(() => move(index, index + 1))">Move down</button>
+                    <Menu label="More" class="max-md:col-start-4 max-md:row-start-1">
+                        <template #default="{ close }">
+                            <button type="button" role="menuitem" class="menu-item" @click="run(() => playFrom(index), close)">Play from here</button>
+                            <hr class="menu-separator">
+                            <button type="button" role="menuitem" class="menu-item" @click="run(() => insert('level', index), close)">Insert level above</button>
+                            <button type="button" role="menuitem" class="menu-item" @click="run(() => insert('break', index), close)">Insert break above</button>
+                            <button type="button" role="menuitem" class="menu-item" :disabled="index === 0" @click="run(() => move(index, index - 1), close)">Move up</button>
+                            <button type="button" role="menuitem" class="menu-item" :disabled="index === structure.rounds.length - 1" @click="run(() => move(index, index + 1), close)">Move down</button>
                             <template v-if="!isBreak(round)">
-                                <hr class="my-1 border-neutral-950/5 md:hidden">
+                                <hr class="menu-separator md:hidden">
                                 <button
                                     type="button"
                                     role="menuitem"
                                     class="menu-item md:hidden"
                                     :disabled="round.ante === 0"
-                                    @click="menu(() => setAnteStyle(round, round.anteStyle === 'bigBlind' ? 'everyone' : 'bigBlind'))"
+                                    @click="run(() => setAnteStyle(round, round.anteStyle === 'bigBlind' ? 'everyone' : 'bigBlind'), close)"
                                 >
                                     {{ round.anteStyle === 'bigBlind' ? 'Ante: everyone pays' : 'Ante: big blind pays' }}
                                 </button>
                             </template>
-                            <hr class="my-1 border-neutral-950/5">
-                            <button type="button" role="menuitem" class="menu-item text-red-700" :disabled="structure.rounds.length === 1" @click="menu(() => remove(index))">Delete</button>
-                        </div>
-                    </div>
+                            <hr class="menu-separator">
+                            <button type="button" role="menuitem" class="menu-item text-red-700" :disabled="structure.rounds.length === 1" @click="run(() => remove(index), close)">Delete</button>
+                        </template>
+                    </Menu>
                 </li>
             </ol>
 
-            <div class="flex flex-wrap items-center gap-2 border-t border-neutral-950/5 px-4 py-3">
-                <button type="button" class="btn" @click="insert('level', structure.rounds.length)"><Icon name="plus" /> Add level</button>
-                <button type="button" class="btn" @click="insert('break', structure.rounds.length)"><Icon name="plus" /> Add break</button>
+            <div class="flex flex-wrap items-center gap-2 border-t border-neutral-950/5 py-3">
+                <button type="button" class="btn py-2 pr-3 pl-2" @click="insert('level', structure.rounds.length)"><Icon name="plus" /> Add level</button>
+                <button type="button" class="btn btn-plain py-2 pr-3 pl-2" @click="insert('break', structure.rounds.length)"><Icon name="plus" /> Add break</button>
                 <span class="ml-auto text-sm/6 text-neutral-500 tabular-nums">{{ summary }}</span>
             </div>
         </div>
@@ -329,10 +321,3 @@ const saveToLibrary = () => {
     </div>
 </template>
 
-<style scoped>
-@reference '../../../css/play.css';
-
-.menu-item {
-    @apply block w-full rounded-lg px-3 py-1.5 text-left hover:bg-chip-50 disabled:pointer-events-none disabled:opacity-40;
-}
-</style>

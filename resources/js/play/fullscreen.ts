@@ -3,7 +3,7 @@
 
 import { onBeforeUnmount, onMounted, type Ref, ref } from 'vue';
 
-export function useFullScreen(element: Ref<HTMLElement | undefined>) {
+export function useFullScreen(element: Readonly<Ref<HTMLElement | undefined>>) {
     const isFullScreen = ref(false);
     /** True while the fallback is in use. */
     const pinned = ref(false);

@@ -91,16 +91,16 @@ const newTournament = async () => {
                 <p class="eyebrow">Players and prize pool</p>
                 <h1 class="mt-1 font-display text-3xl font-semibold tracking-tight text-chip-950">Who’s in, and what’s at stake</h1>
             </div>
-            <button type="button" class="btn" title="Reset the clock and the counters" @click="newTournament">
+            <button type="button" class="btn py-2 pr-3 pl-2" title="Reset the clock and the counters" @click="newTournament">
                 <Icon name="arrow-path" /> New tournament
             </button>
         </div>
 
-        <div class="mt-6 grid gap-6 lg:grid-cols-2">
-            <div class="space-y-6">
-                <section class="card">
-                    <h2 class="px-5 pt-4 text-sm/6 font-semibold text-chip-950">In the game</h2>
-                    <ul role="list" class="divide-y divide-neutral-950/5">
+        <div class="mt-10 grid gap-x-16 gap-y-10 lg:grid-cols-2">
+            <div class="space-y-10">
+                <section>
+                    <h2 class="section-title pb-2">In the game</h2>
+                    <ul role="list" class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                         <li v-for="c in counters" :key="c.title" class="row">
                             <span class="text-sm/6 font-medium text-neutral-700">{{ c.title }}</span>
                             <div class="flex items-center gap-x-3">
@@ -118,9 +118,9 @@ const newTournament = async () => {
                     </ul>
                 </section>
 
-                <section class="card">
-                    <h2 class="px-5 pt-4 text-sm/6 font-semibold text-chip-950">Buy-ins</h2>
-                    <div class="divide-y divide-neutral-950/5">
+                <section>
+                    <h2 class="section-title pb-2">Buy-ins</h2>
+                    <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                         <div class="row">
                             <label for="currency" class="text-sm/6 font-medium text-neutral-700">Currency</label>
                             <select id="currency" class="field w-28" :value="pool.currency" @change="update((p) => ({ ...p, currency: ($event.target as HTMLSelectElement).value }))">
@@ -154,13 +154,13 @@ const newTournament = async () => {
                 </section>
             </div>
 
-            <div class="space-y-6">
-                <section class="card">
-                    <div class="flex items-baseline justify-between px-5 pt-4 pb-2">
-                        <h2 class="text-sm/6 font-semibold text-chip-950">Prize pool</h2>
+            <div class="space-y-10">
+                <section>
+                    <div class="flex items-baseline justify-between pb-2">
+                        <h2 class="section-title">Prize pool</h2>
                         <span class="font-display text-3xl font-semibold tracking-tight text-chip-950 tabular-nums">{{ money(pp.total(pool), pool.currency) }}</span>
                     </div>
-                    <dl class="divide-y divide-neutral-950/5 text-sm/6 tabular-nums">
+                    <dl class="divide-y divide-neutral-950/5 border-t border-neutral-950/10 text-sm/6 tabular-nums">
                         <div class="row">
                             <dt class="text-neutral-600">Chips in play</dt>
                             <dd class="font-medium">{{ chips(pp.chipsInPlay(pool)) }}</dd>
@@ -176,12 +176,12 @@ const newTournament = async () => {
                     </dl>
                 </section>
 
-                <section class="card">
-                    <div class="flex items-center justify-between px-5 pt-4">
-                        <h2 class="text-sm/6 font-semibold text-chip-950">Payouts</h2>
+                <section>
+                    <div class="flex items-center justify-between pb-2">
+                        <h2 class="section-title">Payouts</h2>
                         <button type="button" class="btn btn-plain py-1" @click="editingPayouts = !editingPayouts">{{ editingPayouts ? 'Done' : 'Edit' }}</button>
                     </div>
-                    <ul role="list" class="divide-y divide-neutral-950/5 text-sm/6 tabular-nums">
+                    <ul role="list" class="divide-y divide-neutral-950/5 border-t border-neutral-950/10 text-sm/6 tabular-nums">
                         <li v-for="(pct, i) in percentages" :key="i" class="row">
                             <span class="w-10 font-medium text-chip-950">{{ place(i + 1) }}</span>
                             <span v-if="!editingPayouts" class="text-neutral-500">{{ pct }} %</span>
@@ -202,16 +202,16 @@ const newTournament = async () => {
                             </button>
                         </li>
                     </ul>
-                    <div v-if="editingPayouts" class="space-y-2 border-t border-neutral-950/5 px-5 py-3">
+                    <div v-if="editingPayouts" class="space-y-2 border-t border-neutral-950/5 py-3">
                         <div class="flex justify-between gap-2">
-                            <button type="button" class="btn" @click="addPlace"><Icon name="plus" /> Add place</button>
-                            <button type="button" class="btn" :disabled="pool.customPayouts === null" @click="update((p) => ({ ...p, customPayouts: null }))">Use the table</button>
+                            <button type="button" class="btn py-2 pr-3 pl-2" @click="addPlace"><Icon name="plus" /> Add place</button>
+                            <button type="button" class="btn btn-plain" :disabled="pool.customPayouts === null" @click="update((p) => ({ ...p, customPayouts: null }))">Use the table</button>
                         </div>
                         <p v-if="Math.abs(percentSum - 100) > 0.001" class="text-xs/5 text-neutral-500">
                             These add up to {{ percentSum }} %, so Bilby scales them to the whole pool.
                         </p>
                     </div>
-                    <p v-else class="border-t border-neutral-950/5 px-5 py-3 text-xs/5 text-neutral-500">
+                    <p v-else class="border-t border-neutral-950/5 py-3 text-xs/5 text-neutral-500">
                         {{ pool.customPayouts === null
                             ? `From the payout table for ${pool.entries} ${pool.entries === 1 ? 'entry' : 'entries'}.`
                             : 'Custom payouts for this tournament.' }}

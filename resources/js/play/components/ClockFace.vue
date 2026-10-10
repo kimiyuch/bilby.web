@@ -155,10 +155,11 @@ const items = computed(() => {
     .footer {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
-    .footer > div:nth-child(n) {
+    /* Two columns: left and right (more specific than the three-column rules below). */
+    .inner .footer > div:nth-child(n) {
         text-align: left;
     }
-    .footer > div:nth-child(2n) {
+    .inner .footer > div:nth-child(2n) {
         text-align: right;
     }
     .footer dd {
@@ -202,6 +203,21 @@ const items = computed(() => {
     border-radius: 999px;
     color: rgb(255 255 255 / 0.4);
     transition: color 0.2s, background-color 0.2s;
+}
+/* At least 48 × 48 to tap on a touch screen. */
+@media (pointer: coarse) {
+    .corner :slotted(button) {
+        position: relative;
+    }
+    .corner :slotted(button)::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: max(100%, 3rem);
+        height: max(100%, 3rem);
+        translate: -50% -50%;
+    }
 }
 .corner :slotted(button:hover) {
     color: white;

@@ -17,15 +17,24 @@
         @apply ring-0 bg-transparent hover:bg-chip-950/5;
     }
     .btn-icon {
-        @apply size-9 p-0;
+        @apply relative size-9 p-0;
+    }
+    /* At least 48 × 48 to tap on a touch screen, without changing how the button looks. */
+    @media (pointer: coarse) {
+        .btn-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: max(100%, 3rem);
+            height: max(100%, 3rem);
+            translate: -50% -50%;
+        }
     }
     .btn > svg {
         @apply size-5 shrink-0;
     }
 
-    .card {
-        @apply rounded-xl bg-white ring-1 ring-chip-950/10 shadow-sm;
-    }
     .eyebrow {
         @apply text-sm/6 font-semibold text-ochre-600;
     }
@@ -44,8 +53,24 @@
     }
 
     .row {
-        @apply flex items-center justify-between gap-x-4 px-4 py-3 sm:px-5;
+        @apply flex items-center justify-between gap-x-4 py-3;
     }
+}
+
+/* Menus: the panel, its items and separators. */
+@utility menu-panel {
+    @apply absolute z-30 w-56 rounded-xl bg-white p-1 text-sm/6 text-neutral-800 shadow-lg ring-1 ring-chip-950/10;
+}
+@utility menu-item {
+    @apply flex w-full items-center justify-between gap-x-4 rounded-lg px-3 py-1.5 text-left hover:bg-chip-50 disabled:pointer-events-none disabled:opacity-40 pointer-coarse:py-2.5;
+}
+@utility menu-separator {
+    @apply my-1 border-neutral-950/5;
+}
+
+/* Section headings inside a page, in the website's display face. */
+@utility section-title {
+    @apply font-display text-lg/7 font-semibold tracking-tight text-chip-950;
 }
 
 dialog::backdrop {

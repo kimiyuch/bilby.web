@@ -38,8 +38,9 @@ const voiceName = (v: SpeechSynthesisVoice) => {
         <p class="eyebrow">Settings</p>
         <h1 class="mt-1 font-display text-3xl font-semibold tracking-tight text-chip-950">Sounds and voice</h1>
 
-        <section class="card mt-6">
-            <div class="row">
+        <section class="mt-10">
+            <h2 class="section-title pb-2">Warning</h2>
+            <div class="row border-t border-neutral-950/10">
                 <label for="warning" class="text-sm/6 font-medium text-neutral-700">Warn before the end</label>
                 <select id="warning" v-model.number="s.warningSeconds" class="field w-40">
                     <option :value="0">Off</option>
@@ -49,12 +50,12 @@ const voiceName = (v: SpeechSynthesisVoice) => {
                     <option :value="300">5 minutes</option>
                 </select>
             </div>
-            <p class="border-t border-neutral-950/5 px-5 py-3 text-xs/5 text-neutral-500">The clock turns amber and the warning sound plays.</p>
+            <p class="border-t border-neutral-950/5 py-3 text-xs/5 text-neutral-500">The clock turns amber and the warning sound plays.</p>
         </section>
 
-        <section class="card mt-6">
-            <h2 class="px-5 pt-4 text-sm/6 font-semibold text-chip-950">Sounds</h2>
-            <div class="divide-y divide-neutral-950/5">
+        <section class="mt-10">
+            <h2 class="section-title pb-2">Sounds</h2>
+            <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                 <div v-for="m in moments" :key="m.key" class="row">
                     <label :for="m.key" class="text-sm/6 font-medium text-neutral-700">{{ m.title }}</label>
                     <div class="flex items-center gap-x-2">
@@ -69,9 +70,9 @@ const voiceName = (v: SpeechSynthesisVoice) => {
             </div>
         </section>
 
-        <section class="card mt-6">
-            <h2 class="px-5 pt-4 text-sm/6 font-semibold text-chip-950">Voice</h2>
-            <div class="divide-y divide-neutral-950/5">
+        <section class="mt-10">
+            <h2 class="section-title pb-2">Voice</h2>
+            <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                 <label class="row cursor-pointer">
                     <span class="text-sm/6 font-medium text-neutral-700">Announce levels and breaks</span>
                     <input v-model="s.announce" type="checkbox" class="size-5 accent-chip-600">
@@ -90,9 +91,9 @@ const voiceName = (v: SpeechSynthesisVoice) => {
             </div>
         </section>
 
-        <section class="card mt-6">
-            <h2 class="px-5 pt-4 text-sm/6 font-semibold text-chip-950">Volume</h2>
-            <div class="divide-y divide-neutral-950/5">
+        <section class="mt-10">
+            <h2 class="section-title pb-2">Volume</h2>
+            <div class="divide-y divide-neutral-950/5 border-t border-neutral-950/10">
                 <div class="row">
                     <Icon name="speaker-x-mark" class="size-5 shrink-0 text-neutral-400" />
                     <input v-model.number="s.volume" type="range" min="0" max="1" step="0.05" class="flex-1 accent-chip-600" aria-label="Volume" :disabled="s.muted">

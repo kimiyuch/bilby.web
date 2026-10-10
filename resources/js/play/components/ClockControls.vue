@@ -1,41 +1,19 @@
 <script setup lang="ts">
 // Previous, start/pause and next; the rest (±1 minute, restart, mute, reset) in a menu. Space, the arrow keys
 // and M work anywhere on the page.
-import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { confirm } from '../confirm';
 import * as store from '../store';
 import Icon from './Icon.vue';
+import Menu from './Menu.vue';
 
-const open = ref(false);
-const menu = ref<HTMLElement>();
-
-const close = (event: Event) => {
-    if (open.value && !menu.value?.contains(event.target as Node)) open.value = false;
-};
-const escape = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') open.value = false;
-};
-onMounted(() => {
-    document.addEventListener('pointerdown', close);
-    window.addEventListener('keydown', escape);
-});
-onBeforeUnmount(() => {
-    document.removeEventListener('pointerdown', close);
-    window.removeEventListener('keydown', escape);
-});
-
-/** Runs a menu item; the menu stays open for ±1 minute, so it can be pressed a few times. */
-const run = (action: () => void, keepOpen = false) => {
-    action();
-    if (!keepOpen) open.value = false;
-};
+/** `balanced` adds a spacer so the start button stays centered despite the menu button on the right. */
+withDefaults(defineProps<{ balanced?: boolean }>(), { balanced: true });
 
 const addMinute = () => store.adjust(1);
 const takeMinute = () => store.adjust(-1);
 const toggleMute = () => (store.settings.muted = !store.settings.muted);
 
 const reset = async () => {
-    open.value = false;
     const ok = await confirm({
         title: 'Reset the clock?',
         message: 'The clock goes back to level 1 and stops.',
@@ -44,12 +22,18 @@ const reset = async () => {
     });
     if (ok) store.resetClock();
 };
+
+/** Runs a menu item and closes the menu, except for ±1 minute, which can be pressed a few times. */
+const run = (action: () => unknown, close: () => void, keepOpen = false) => {
+    action();
+    if (!keepOpen) close();
+};
 </script>
 
 <template>
     <div class="flex items-center justify-center gap-x-3">
         <!-- As wide as the menu button, so Start stays in the middle. -->
-        <span class="size-11" aria-hidden="true"></span>
+        <span v-if="balanced" class="size-11" aria-hidden="true"></span>
         <button type="button" class="btn btn-icon size-11" title="Previous level (←)" aria-label="Previous level" @click="store.previous">
             <Icon name="backward" />
         </button>
@@ -69,56 +53,41 @@ const reset = async () => {
             <Icon name="forward" />
         </button>
 
-        <div ref="menu" class="relative">
-            <button
-                type="button"
-                class="btn btn-plain btn-icon size-11"
-                aria-label="More"
-                title="More"
-                aria-haspopup="menu"
-                :aria-expanded="open"
-                @click="open = !open"
-            >
+        <Menu label="More" up align="center" button-class="size-11">
+            <template #icon>
                 <Icon :name="store.settings.muted ? 'speaker-x-mark' : 'ellipsis-horizontal'" />
-            </button>
-            <div
-                v-if="open"
-                role="menu"
-                class="absolute bottom-full left-1/2 z-20 mb-2 w-56 -translate-x-1/2 rounded-xl bg-white p-1 text-sm/6 shadow-lg ring-1 ring-chip-950/10"
-            >
-                <button type="button" role="menuitem" class="menu-item" @click="run(addMinute, true)">
+            </template>
+            <template #default="{ close }">
+                <button type="button" role="menuitem" class="menu-item" @click="run(addMinute, close, true)">
                     Add a minute <kbd>↑</kbd>
                 </button>
-                <button type="button" role="menuitem" class="menu-item" @click="run(takeMinute, true)">
+                <button type="button" role="menuitem" class="menu-item" @click="run(takeMinute, close, true)">
                     Take a minute off <kbd>↓</kbd>
                 </button>
-                <button type="button" role="menuitem" class="menu-item" @click="run(store.restartRound)">
+                <button type="button" role="menuitem" class="menu-item" @click="run(store.restartRound, close)">
                     Restart this level
                 </button>
-                <button type="button" role="menuitem" class="menu-item" @click="run(toggleMute)">
+                <button type="button" role="menuitem" class="menu-item" @click="run(toggleMute, close)">
                     {{ store.settings.muted ? 'Turn sounds on' : 'Mute' }} <kbd>M</kbd>
                 </button>
-                <hr class="my-1 border-neutral-950/5">
+                <hr class="menu-separator">
                 <button
                     type="button"
                     role="menuitem"
                     class="menu-item text-red-700"
                     :disabled="!store.tournament.value.clock.hasStarted"
-                    @click="reset"
+                    @click="run(reset, close)"
                 >
                     Reset clock…
                 </button>
-            </div>
-        </div>
+            </template>
+        </Menu>
     </div>
 </template>
 
 <style scoped>
 @reference '../../../css/play.css';
 
-.menu-item {
-    @apply flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-left hover:bg-chip-50 disabled:pointer-events-none disabled:opacity-40;
-}
 kbd {
     @apply font-sans text-xs text-neutral-400;
 }
