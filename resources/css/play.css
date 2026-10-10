@@ -5,7 +5,7 @@
 
 @layer components {
     .btn {
-        @apply inline-flex items-center justify-center gap-x-2 rounded-full px-4 py-2 text-sm/5 font-medium whitespace-nowrap ring-1 ring-chip-400 ring-inset text-chip-900 bg-white hover:bg-chip-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:pointer-events-none disabled:opacity-40;
+        @apply inline-flex items-center justify-center gap-x-2 rounded-full px-4 py-2 text-sm/5 font-medium whitespace-nowrap ring-1 ring-chip-400 ring-inset text-chip-900 bg-transparent hover:bg-chip-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:pointer-events-none disabled:opacity-40;
     }
     .btn-primary {
         @apply bg-chip-600 text-white ring-0 shadow-sm hover:bg-chip-700;
