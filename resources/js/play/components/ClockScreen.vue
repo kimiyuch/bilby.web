@@ -1,11 +1,12 @@
 <script setup lang="ts">
 // The clock and its control strip, as one card like a media player: the structure being played on the left,
-// previous, start/pause and next in the middle, and a menu with the rest.
+// previous, start/pause and next in the middle, and a menu with the rest on the right.
 import { computed, ref } from 'vue';
 import { soundBlocked } from '../alerts';
 import { useFullScreen } from '../fullscreen';
 import * as store from '../store';
 import ClockControls from './ClockControls.vue';
+import ClockMenu from './ClockMenu.vue';
 import ClockFaceFrame from './ClockFaceFrame.vue';
 
 const frame = ref<InstanceType<typeof ClockFaceFrame>>();
@@ -22,7 +23,7 @@ const quiet = computed(() => soundBlocked.value && !store.settings.muted && stor
 
 <template>
     <div class="mx-auto flex max-w-6xl flex-col gap-y-4 px-4 pb-10 sm:px-6 lg:px-8">
-        <div class="rounded-2xl bg-white shadow-2xl ring-1 ring-chip-950/10">
+        <div class="rounded-2xl bg-ochre-50 shadow-2xl ring-1 ring-chip-950/10">
             <ClockFaceFrame
                 ref="frame"
                 :is-full-screen="isFullScreen"
@@ -38,7 +39,8 @@ const quiet = computed(() => soundBlocked.value && !store.settings.muted && stor
                         {{ store.tournament.value.structure.name }}
                     </a>
                 </div>
-                <ClockControls class="max-sm:col-span-3 sm:col-start-2" />
+                <ClockControls class="col-start-2" />
+                <ClockMenu class="justify-self-end" />
             </div>
         </div>
         <p v-if="quiet" class="mx-auto rounded-full bg-ochre-100 px-4 py-1.5 text-center text-sm/6 font-medium text-ochre-900">
