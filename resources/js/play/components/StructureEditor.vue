@@ -174,8 +174,8 @@ const saveToLibrary = () => {
                 <p class="mt-1 text-sm/6 text-neutral-500">{{ summary }} · Changes apply straight away; the clock stays on its level.</p>
             </div>
             <div class="flex items-center gap-2">
-                <button type="button" class="btn py-2 pr-3 pl-2" @click="showLibrary = true"><Icon name="book-open" /> Structures</button>
-                <button type="button" class="btn py-2 pr-3 pl-2" @click="showGenerator = true"><Icon name="sparkles" /> Generate</button>
+                <button type="button" class="btn" @click="showLibrary = true"><Icon name="book-open" /> Structures</button>
+                <button type="button" class="btn" @click="showGenerator = true"><Icon name="sparkles" /> Generate</button>
                 <Menu label="More">
                     <template #default="{ close }">
                         <button type="button" role="menuitem" class="menu-item" @click="run(saveToLibrary, close)">Save to My Structures</button>
@@ -310,8 +310,8 @@ const saveToLibrary = () => {
             </ol>
 
             <div class="flex flex-wrap items-center gap-2 border-t border-neutral-950/5 py-3">
-                <button type="button" class="btn py-2 pr-3 pl-2" @click="insert('level', structure.rounds.length)"><Icon name="plus" /> Add level</button>
-                <button type="button" class="btn btn-plain py-2 pr-3 pl-2" @click="insert('break', structure.rounds.length)"><Icon name="plus" /> Add break</button>
+                <button type="button" class="btn" @click="insert('level', structure.rounds.length)"><Icon name="plus" /> Add level</button>
+                <button type="button" class="btn btn-plain" @click="insert('break', structure.rounds.length)"><Icon name="plus" /> Add break</button>
                 <span class="ml-auto text-sm/6 text-neutral-500 tabular-nums">{{ summary }}</span>
             </div>
         </div>

@@ -5,7 +5,7 @@
 
 @layer components {
     .btn {
-        @apply inline-flex items-center justify-center gap-x-1.5 rounded-full px-3.5 py-2 text-sm/5 font-semibold whitespace-nowrap ring-1 ring-chip-950/10 ring-inset text-chip-800 bg-white hover:bg-chip-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:pointer-events-none disabled:opacity-40;
+        @apply inline-flex items-center justify-center gap-x-2 rounded-full px-4 py-2 text-sm/5 font-medium whitespace-nowrap ring-1 ring-chip-950/10 ring-inset text-chip-900 bg-white hover:bg-chip-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chip-600 disabled:pointer-events-none disabled:opacity-40;
     }
     .btn-primary {
         @apply bg-chip-600 text-white ring-0 shadow-sm hover:bg-chip-700;
@@ -31,8 +31,21 @@
             translate: -50% -50%;
         }
     }
+    /* Icons next to a label: small and in the website's ochre accent, like the feature icons on the homepage. */
     .btn > svg {
-        @apply size-5 shrink-0;
+        @apply size-4 shrink-0 text-ochre-500;
+    }
+    /* A button with an icon first is a little tighter on that side, so the icon and label look centred. */
+    .btn:has(> svg:first-child):not(.btn-icon) {
+        @apply pl-3.5;
+    }
+    /* Icon-only buttons, and buttons on a filled background, keep the label's color and a larger icon. */
+    .btn-icon > svg {
+        @apply size-5 text-current;
+    }
+    .btn-primary > svg,
+    .btn-danger > svg {
+        @apply text-current;
     }
 
     .eyebrow {

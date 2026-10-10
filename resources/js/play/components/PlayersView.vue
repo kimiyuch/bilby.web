@@ -92,7 +92,7 @@ const newTournament = async () => {
                 <p class="eyebrow">Players and prize pool</p>
                 <h1 class="mt-1 font-display text-3xl font-semibold tracking-tight text-chip-950">Who’s in, and what’s at stake</h1>
             </div>
-            <button type="button" class="btn py-2 pr-3 pl-2" title="Reset the clock and the counters" @click="newTournament">
+            <button type="button" class="btn" title="Reset the clock and the counters" @click="newTournament">
                 <Icon name="arrow-path" /> New tournament
             </button>
         </div>
@@ -205,7 +205,7 @@ const newTournament = async () => {
                     </ul>
                     <div v-if="editingPayouts" class="space-y-2 border-t border-neutral-950/5 py-3">
                         <div class="flex justify-between gap-2">
-                            <button type="button" class="btn py-2 pr-3 pl-2" @click="addPlace"><Icon name="plus" /> Add place</button>
+                            <button type="button" class="btn" @click="addPlace"><Icon name="plus" /> Add place</button>
                             <button type="button" class="btn btn-plain" :disabled="pool.customPayouts === null" @click="update((p) => ({ ...p, customPayouts: null }))">Use the table</button>
                         </div>
                         <p v-if="Math.abs(percentSum - 100) > 0.001" class="text-xs/5 text-neutral-500">
