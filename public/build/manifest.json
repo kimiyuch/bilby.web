@@ -33,7 +33,7 @@
     "isEntry": true
   },
   "resources/css/play.css": {
-    "file": "assets/play-BMabxFL9.css",
+    "file": "assets/play-brCXZUx0.css",
     "name": "play",
     "names": [
       "play.css"
@@ -48,12 +48,12 @@
     "isEntry": true
   },
   "resources/js/play/main.ts": {
-    "file": "assets/main-BQDSzgep.js",
+    "file": "assets/main-Dobws0wD.js",
     "name": "main",
     "src": "resources/js/play/main.ts",
     "isEntry": true,
     "css": [
-      "assets/main-CIVS6rKO.css"
+      "assets/main-C4gLbCZ2.css"
     ],
     "assets": [
       "assets/ticker-wQbDgyxs.js"
