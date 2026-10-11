@@ -1,5 +1,5 @@
 @php
-    $download = config('bilby.download_url');
+    $download = url('/download');
     $repository = config('bilby.repository_url');
 
     $features = [
